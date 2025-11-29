@@ -15,12 +15,12 @@ tk.Label(root, text="Taxi Bookings Inc.", font=("Helvetica", 30), anchor="center
 #BUTTON <-------
 
 login = tk.Button(root, text="Login", font=("Helvetica", 18), bg="blue", fg="white")
-login.pack(padx=20, pady=20)
+login.pack(padx=20, pady=25)
 
 register = tk.Button(root, text="Register", font=("Helvetica", 18), bg="yellow", fg="black",)
-register.pack(padx=20, pady=20)
+register.pack(padx=20, pady=25)
 
 register = tk.Button(root, text="Exit", font=("Helvetica", 15), bg="green", fg="black", command=root.quit)
-register.pack(padx=20, pady=20)
+register.pack(padx=20, pady=25)
 
 root.mainloop()
