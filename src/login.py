@@ -8,7 +8,7 @@ def open_login_window():
     login_window = tk.Toplevel()
     login_window.title("Login")
     login_window.geometry("450x320")
-    
+
     #The Username
     tk.Label(login_window, text="Username:", font=("Helvetica", 14)).pack(pady=10)
     label = tk.Entry(login_window, font=("Helvetica", 14))
