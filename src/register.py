@@ -11,7 +11,7 @@ root.maxsize(1000, 500)
 root.geometry("300x300+50+50")
 
 #Actually login
-tk.Label(root, text="Register New User", font=("Helvetica", 30), anchor="center").pack()
+tk.Label(root, text="Register", font=("Helvetica", 30), anchor="center").pack()
 
 #Enter your username
 username_label = tk.Label(root, text="Username:", font=("Helvetica", 14))
@@ -28,4 +28,8 @@ password_entry.pack(pady=5)
 #Register button
 register_button = tk.Button(root, text="Register", font=("Helvetica", 14), bg="yellow", fg="black")
 register_button.pack(pady=20)
+
+#Back button
+back_button = tk.Button(root, text="Back", font=("Helvetica", 14), bg="gray", fg="black", command=root.destroy)
+back_button.pack(pady=10)
 root.mainloop()
