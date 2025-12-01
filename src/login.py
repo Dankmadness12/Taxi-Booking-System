@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+root = tk.Tk()
+
 def open_login_window():
     login_window = tk.Toplevel()
     login_window.title("Login")
@@ -20,7 +22,6 @@ def open_login_window():
 
 if __name__ == '__main__':
     # Create a root window so Toplevel has a parent, then open login and run the loop
-    root = tk.Tk()
     root.withdraw()  # hide the root window
     open_login_window()
     root.mainloop()
