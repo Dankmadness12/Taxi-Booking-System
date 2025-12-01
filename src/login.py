@@ -6,7 +6,7 @@ root = tk.Tk()
 def open_login_window():
     login_window = tk.Toplevel()
     login_window.title("Login")
-    login_window.geometry("450x300")
+    login_window.geometry("450x320")
     
     
     tk.Label(login_window, text="Username:", font=("Helvetica", 14)).pack(pady=10)
