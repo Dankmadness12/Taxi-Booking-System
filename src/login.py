@@ -16,3 +16,11 @@ def open_login_window():
     
     login_button = tk.Button(login_window, text="Submit", font=("Helvetica", 14), bg="blue", fg="white")
     login_button.pack(pady=20)
+
+
+if __name__ == '__main__':
+    # Create a root window so Toplevel has a parent, then open login and run the loop
+    root = tk.Tk()
+    root.withdraw()  # hide the root window
+    open_login_window()
+    root.mainloop()
