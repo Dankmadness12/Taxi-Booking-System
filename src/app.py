@@ -32,7 +32,7 @@ class TaxiBookings(tk.Tk):
 class Homepage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        ttk.Label(self, text="Welcome", font=("Helvetica", 22)).pack(pady=30)
+        ttk.Label(self, text="Welcome to TaxiBookings Inc.", font=("Helvetica", 22)).pack(pady=30)
         ttk.Button(self, text="Login", command=lambda: controller.show_frame("LoginPage")).pack(pady=20)
         ttk.Button(self, text="Register", command=lambda: controller.show_frame("RegisterPage")).pack(pady=20)
         ttk.Button(self, text="Exit", command=controller.destroy).pack(pady=20)
@@ -41,17 +41,33 @@ class Homepage(tk.Frame):
 class LoginPage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        ttk.Label(self, text="Login Page", font=("Helvetica", 18)).pack(pady=20)
-        ttk.Entry(self).pack()
-        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
+        tk.Label(self, text="Login", font=("Helvetica", 20)).pack(pady=20) #<-------- Login Title
+        tk.Label(self, text="Username").pack() #<-------- Username Label
+        ttk.Entry(self).pack() #<-------- Username Entry
+        tk.Label(self, text="Password").pack(pady=10) #<-------- Password Label
+        ttk.Entry(self, text="Password", show="*").pack(pady=5) #<-------- Password Entry
+        ttk.Button(self, text="Login").pack(pady=15) #<-------- Login Button
+        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10) #<-------- Back Button
 
 #The Register Page <-------------------------------------------------
 class RegisterPage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        ttk.Label(self, text="Register Page", font=("Helvetica", 18)).pack(pady=20)
-        ttk.Entry(self).pack()
-        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
+        ttk.Label(self, text="Register", font=("Helvetica", 18)).pack(pady=20) #<-------- Register Title
+        tk.Label(self, text="Username").pack() #<-------- Username Label
+        ttk.Entry(self).pack() #<-------- Username Entry
+        tk.Label(self, text="Password").pack(pady=7) #<-------- Password Label
+        ttk.Entry(self, text="Password", show="*").pack(pady=7) #<-------- Password Entry
+        tk.Label(self, text="Phone Number").pack() #<-------- Phone Number Label
+        ttk.Entry(self, text="Phone Number").pack(pady=7) #<-------- Phone Number Entry
+        ttk.Label(self, text="Date of Birth (DD/MM/YYYY)").pack() #<-------- DOB Label
+        ttk.Entry(self, text="Date of Birth").pack(pady=7) #<
+        tk.Label(self, text="Email").pack() #<-------- Email Label
+        ttk.Entry(self, text="Email").pack(pady=7) #<-------- Email Entry
+        tk.Label(self, text="Address").pack() #<-------- Address Label
+        ttk.Entry(self, text="Address").pack(pady=7) #<-------- Address Entry
+        ttk.Button(self, text="Register").pack(pady=7) #<-------- Register Button
+        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10) #<-------- Back Button
 
 if __name__ == "__main__":
     app = TaxiBookings()
