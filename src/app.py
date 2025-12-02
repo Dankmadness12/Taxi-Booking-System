@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+
 root = tk.Tk()
 
 # Landing Page <-------
@@ -17,11 +18,11 @@ label.pack(pady=50)
 #Buttons <-------
 
 #Login
-login_button = tk.Button(root, text="Login", font=("Helvetica", 18), bg="blue", fg="white", width=15, command=lambda: print("Login Clicked"))
+login_button = tk.Button(root, text="Login", font=("Helvetica", 18), bg="blue", fg="white", width=15)
 login_button.pack(pady=20)
 
 #Register
-register_button = tk.Button(root, text="Register", font=("Helvetica", 18), bg="green", fg="white", width=15, command=lambda: print("Register Clicked"))
+register_button = tk.Button(root, text="Register", font=("Helvetica", 18), bg="green", fg="white", width=15)
 register_button.pack(pady=20)
 
 #Exit

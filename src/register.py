@@ -4,32 +4,30 @@ from tkinter import ttk
 root = tk.Tk()
 
 # Creating the window
-root.title("Register")
-root.geometry("200x80")
-root.minsize(500, 400)
-root.maxsize(1000, 500)
-root.geometry("300x300+50+50")
+def open_register_window():
+    register_window = tk.Toplevel()
+    register_window.title("Register")
+    register_window.geometry("450x400")
 
-#Actually login
-tk.Label(root, text="Register", font=("Helvetica", 30), anchor="center").pack()
+    # The Username
+    tk.Label(register_window, text="Username:", font=("Helvetica", 14)).pack(pady=10)
+    username_entry = tk.Entry(register_window, font=("Helvetica", 14))
+    username_entry.pack(pady=5)
 
-#Enter your username
-username_label = tk.Label(root, text="Username:", font=("Helvetica", 14))
-username_label.pack(pady=10)
-username_entry = tk.Entry(root, font=("Helvetica", 14))
-username_entry.pack(pady=5)
+    # The Password
+    tk.Label(register_window, text="Password:", font=("Helvetica", 14)).pack(pady=10)
+    password_entry = tk.Entry(register_window, show="*", font=("Helvetica", 14))
+    password_entry.pack(pady=5)
 
-#Enter your password
-password_label = tk.Label(root, text="Password:", font=("Helvetica", 14))
-password_label.pack(pady=10)
-password_entry = tk.Entry(root, show="*", font=("Helvetica", 14))
-password_entry.pack(pady=5)
+    # Register Button
+    register_button = tk.Button(register_window, text="Register", font=("Helvetica", 14), bg="yellow", fg="black")
+    register_button.pack(pady=20)
 
-#Register button
-register_button = tk.Button(root, text="Register", font=("Helvetica", 14), bg="yellow", fg="black")
-register_button.pack(pady=20)
-
-#Back button
-back_button = tk.Button(root, text="Back", font=("Helvetica", 14), bg="gray", fg="black", command=root.destroy)
-back_button.pack(pady=10)
-root.mainloop()
+    # Back Button
+    back_button = tk.Button(register_window, text="Back", font=("Helvetica", 14), bg="gray", fg="black", command=register_window.destroy)
+    back_button.pack(pady=10)
+# Actually open the window (and mainloop I guess)
+if __name__ == '__main__':
+    root.withdraw()  
+    open_register_window()
+    root.mainloop()
