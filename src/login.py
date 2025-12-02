@@ -4,7 +4,7 @@ from tkinter import ttk
 root = tk.Tk()
 
 #Creating the window
-def open_login_window(parent=None):
+def open_login_window():
     login_window = tk.Toplevel()
     login_window.title("Login")
     login_window.geometry("450x320")

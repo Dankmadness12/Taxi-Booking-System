@@ -4,7 +4,7 @@ from tkinter import ttk
 root = tk.Tk()
 
 # Creating the window
-def open_register_window(parent=None):
+def open_register_window():
     register_window = tk.Toplevel()
     register_window.title("Register")
     register_window.geometry("450x400")
