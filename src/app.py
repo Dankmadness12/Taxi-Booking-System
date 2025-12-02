@@ -1,36 +1,56 @@
 import tkinter as tk
 from tkinter import ttk
 
-root = tk.Tk()
-
-# Landing Page <-------
-class Homepage(tk.Tk):
+#Creating the main application <-------------------------------------------------
+class TaxiBookings(tk.Tk):
     def __init__(self):
         super().__init__()
-root.title("Welcome to Taxi Bookings Inc.")
-root.geometry("500x400")
-root.minsize(500, 400)
-root.maxsize(1000, 500)
-label = tk.Label(root, text="Welcome to Taxi Bookings Inc.", font=("Helvetica", 24), anchor="center")
-label.pack(pady=50)
+        self.title("Taxi Bookings Inc.")
+        self.geometry("700x500")
+        
+        #The container for the frames <-------------------------------------------------
+        container = tk.Frame(self)
+        container.pack(fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
-#Buttons <-------
+        self.frames = {}
+        for Page in (Homepage, LoginPage, RegisterPage):
+            name = Page.__name__
+            frame = Page(parent=container, controller=self)
+            self.frames[name] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
 
-#Login
-login_button = tk.Button(root, text="Login", font=("Helvetica", 18), bg="blue", fg="white", width=15)
-login_button.pack(pady=20)
+        self.show_frame("Homepage")
 
-#Register
-register_button = tk.Button(root, text="Register", font=("Helvetica", 18), bg="green", fg="white", width=15)
-register_button.pack(pady=20)
+    def show_frame(self, page_name):
+        self.frames[page_name].tkraise()
 
-#Exit
-back_button = tk.Button(root, text="Exit", font=("Helvetica", 14), bg="gray", fg="black", command=root.destroy)
-back_button.pack(pady=10)
+#The Landing Page <-------------------------------------------------
+class Homepage(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        ttk.Label(self, text="Welcome", font=("Helvetica", 22)).pack(pady=30)
+        ttk.Button(self, text="Login", command=lambda: controller.show_frame("LoginPage")).pack(pady=10)
+        ttk.Button(self, text="Register", command=lambda: controller.show_frame("RegisterPage")).pack(pady=10)
+        ttk.Button(self, text="Exit", command=controller.destroy).pack(pady=20)
 
-#Container Frame
-container = tk.Frame(root)
-container.pack(side="top", fill="both", expand=True)
+#The Login Page <-------------------------------------------------
+class LoginPage(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        ttk.Label(self, text="Login Page", font=("Helvetica", 18)).pack(pady=20)
+        ttk.Entry(self).pack()
+        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
+#The Register Page <-------------------------------------------------
+class RegisterPage(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        ttk.Label(self, text="Register Page", font=("Helvetica", 18)).pack(pady=20)
+        ttk.Entry(self).pack()
+        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
-root.mainloop()
+if __name__ == "__main__":
+    app = TaxiBookings()
+    app.mainloop()
