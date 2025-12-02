@@ -31,8 +31,8 @@ class Homepage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         ttk.Label(self, text="Welcome", font=("Helvetica", 22)).pack(pady=30)
-        ttk.Button(self, text="Login", command=lambda: controller.show_frame("LoginPage")).pack(pady=10)
-        ttk.Button(self, text="Register", command=lambda: controller.show_frame("RegisterPage")).pack(pady=10)
+        ttk.Button(self, text="Login", command=lambda: controller.show_frame("LoginPage")).pack(pady=20)
+        ttk.Button(self, text="Register", command=lambda: controller.show_frame("RegisterPage")).pack(pady=20)
         ttk.Button(self, text="Exit", command=controller.destroy).pack(pady=20)
 
 #The Login Page <-------------------------------------------------

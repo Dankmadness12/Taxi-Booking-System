@@ -14,6 +14,7 @@ def open_register_window():
     username_entry = tk.Entry(open_register_window, font=("Helvetica", 14))
     username_entry.pack(pady=5)
 
+
     # The Password
     tk.Label(open_register_window, text="Password:", font=("Helvetica", 14)).pack(pady=10)
     password_entry = tk.Entry(open_register_window, show="*", font=("Helvetica", 14))
