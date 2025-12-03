@@ -61,7 +61,7 @@ class RegisterPage(tk.Frame):
         tk.Label(self, text="Phone Number").pack() #<-------- Phone Number Label
         ttk.Entry(self, text="Phone Number").pack(pady=7) #<-------- Phone Number Entry
         ttk.Label(self, text="Date of Birth (DD/MM/YYYY)").pack() #<-------- DOB Label
-        ttk.Entry(self, text="Date of Birth").pack(pady=7) #<
+        ttk.Entry(self, text="Date of Birth").pack(pady=7) #< -------- DOB Entry
         tk.Label(self, text="Email").pack() #<-------- Email Label
         ttk.Entry(self, text="Email").pack(pady=7) #<-------- Email Entry
         tk.Label(self, text="Address").pack() #<-------- Address Label
