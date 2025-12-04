@@ -71,6 +71,7 @@ try:
 except sqlite3.Error as e:
     print(f"Error deleting null ratings: {e}")
 
+#Adding a driver! <----------------------------------------
 try:
     cursor.execute("INSERT OR IGNORE INTO Drivers (name, email, password, phone_number, license_number, vehicle_details) VALUES (?, ?, ?, ?, ?, ?)",
                    ('Maya Afton', 'mafton@gmail.com', 'password5', 7860826, '292736', 'Toyota Camry 2020'))
