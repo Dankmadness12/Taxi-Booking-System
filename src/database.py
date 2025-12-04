@@ -78,8 +78,8 @@ except sqlite3.Error as e:
 
 #Adding a Driver to the Table <----------------------------------------
 try:
-    cursor.execute("INSERT OR IGNORE INTO Drivers (name, email, password, phone_number, license_number, vehicle_details) VALUES (?, ?, ?, ?, ?, ?)", 
-    ('Samantha Cross', 'sammyc@gmail.com', 'safedriver99', 8940273, 124277, 'Toyota Camry 2020, Blue'))
+    cursor.execute("INSERT OR IGNORE INTO Drivers (name, email, password, phone_number, license_number, vehicle_details, rating) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+    ('Samantha Cross', 'sammyc@gmail.com', 'safedriver99', 8940273, 124277, 'Toyota Camry 2020, Blue', 4.8))
     (connection.commit)
 except sqlite3.Error as e:
     print(f"Error inserting driver: {e}")
