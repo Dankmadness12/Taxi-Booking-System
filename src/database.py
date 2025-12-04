@@ -1,5 +1,4 @@
 import sqlite3
-connection = sqlite3.connect('database.db')
 
 try:
     connection = sqlite3.connect('database.db')
@@ -7,34 +6,43 @@ try:
     print("Database connection confirmed.")
 except sqlite3.Error as e:
     print(f"Database connection failed: {e}")
-    
-    cursor = connection.cursor()
-    
-    # Create Users table <----------------------------------------
-    try:
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS Users (
-                user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT NOT NULL,
-                email TEXT NOT NULL UNIQUE,
-                password TEXT NOT NULL,
-                date_of_birth DATE,
-                phone_number INTEGER,
-                address TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                
-            )
-        ''')
-        connection.commit()
-    except sqlite3.Error as e:
-        print(f"Error creating table: {e}")
+    exit()
 
-    try:
-        cursor.execute("INSERT INTO Users (username, email, password, date_of_birth, phone_number, address) VALUES (?, ?, ?, ?, ?, ?)",) 
-        ('john_doe', 'john_dow@hotmail.com', 'password123', '1990-01-01', 7345503, 'San Juan')
-        connection.commit()
-        print("User inserted successfully!")
-    except sqlite3.Error as e:
-        print(f"Error inserting user: {e}")
+# Create Users table <----------------------------------------
+try:
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Users (
+            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL,
+            email TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL,
+            date_of_birth DATE,
+            phone_number INTEGER,
+            address TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            
+        )
+    ''')
+    connection.commit()
+except sqlite3.Error as e:
+    print(f"Error creating table: {e}")
+
+# Adding a user <----------------------------------------
+try:
+    cursor.execute("INSERT INTO Users (username, email, password, date_of_birth, phone_number, address) VALUES (?, ?, ?, ?, ?, ?)", 
+    ('john_doe', 'john_dow@hotmail.com', 'password123', '1990-01-01', 7345503, 'San Juan'))
+    connection.commit()
+    print("User inserted successfully!")
+except sqlite3.Error as e:
+    print(f"Error inserting user: {e}")
+
+# Adding another user <----------------------------------------
+try:
+    cursor.execute("INSERT INTO Users (username, email, password, date_of_birth, phone_number, address) VALUES (?, ?, ?, ?, ?, ?)", 
+    ('jada black', 'jblack@gmail.com', 'mybigboop23', '1992-12-09', 890458, 'San Fernando'))
+    connection.commit()
+    print("User inserted successfully!")
+except sqlite3.Error as e:
+    print(f"Error inserting user: {e}")
         
 
