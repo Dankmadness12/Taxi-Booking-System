@@ -22,7 +22,7 @@ class TaxiBookings(tk.Tk):
         
         #All of the Frames <-------------------------------------------------
         self.frames = {}
-        for Page in (Homepage, LoginPage, RegisterPage, Passenger, DriverLoginPage, Driver):
+        for Page in (Homepage, LoginPage, RegisterPage, Passenger, DriverLoginPage, Driver, AdminLoginPage, Admin):
             name = Page.__name__
             frame = Page(parent=container, controller=self)
             self.frames[name] = frame
@@ -121,6 +121,10 @@ class DriverLoginPage(tk.Frame):
         self.username_entry = ttk.Entry(self)
         self.username_entry.pack()
 
+        tk.Label(self, text="License Number").pack(pady=10)
+        self.license_entry = ttk.Entry(self)
+        self.license_entry.pack(pady=5)
+
         tk.Label(self, text="Password").pack(pady=10)
         self.password_entry = ttk.Entry(self, show="*")
         self.password_entry.pack(pady=5)
@@ -131,6 +135,31 @@ class DriverLoginPage(tk.Frame):
     def login_driver(self):
         # Placeholder for driver login logic
         messagebox.showinfo("Info", "Driver login functionality coming soon!")
+
+#The Admin Login Page <-------------------------------------------------
+class AdminLoginPage(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        ttk.Label(self, text="Admin Login", font=("Helvetica", 18)).pack(pady=20)
+
+        tk.Label(self, text="Admin ID").pack()
+        self.admin_id_entry = ttk.Entry(self)
+        self.admin_id_entry.pack()
+
+        tk.Label(self, text="Admin Username").pack()
+        self.username_entry = ttk.Entry(self)
+        self.username_entry.pack()
+
+        tk.Label(self, text="Password").pack(pady=10)
+        self.password_entry = ttk.Entry(self, show="*")
+        self.password_entry.pack(pady=5)
+
+        ttk.Button(self, text="Login", command=self.login_admin).pack(pady=15)
+        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
+
+    def login_admin(self):
+        # Placeholder for admin login logic
+        messagebox.showinfo("Info", "Admin login functionality coming soon!")
 
 #The Register Page <-------------------------------------------------
 class RegisterPage(tk.Frame):
@@ -218,6 +247,15 @@ class Driver(tk.Frame):
         super().__init__(parent)
         ttk.Label(self, text="Driver's Page", font=("Helvetica", 18)).pack(pady=20)
         ttk.Button(self, text="View Bookings").pack(pady=10)
+        ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
+
+#The Admin Frame <-------------------------------------------------
+class Admin(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        ttk.Label(self, text="Admin Page", font=("Helvetica", 18)).pack(pady=20)
+        ttk.Button(self, text="Manage Users").pack(pady=10)
+        ttk.Button(self, text="Manage Drivers").pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
 if __name__ == "__main__":
