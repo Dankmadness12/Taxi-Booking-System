@@ -19,9 +19,10 @@ class TaxiBookings(tk.Tk):
         container.pack(fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
-
+        
+        #All of the Frames <-------------------------------------------------
         self.frames = {}
-        for Page in (Homepage, LoginPage, RegisterPage):
+        for Page in (Homepage, LoginPage, RegisterPage, Passenger):
             name = Page.__name__
             frame = Page(parent=container, controller=self)
             self.frames[name] = frame
@@ -75,7 +76,7 @@ class LoginPage(tk.Frame):
         try:
             conn = sqlite3.connect('database.db')
             cursor = conn.cursor()
-            cursor.execute("SELECT password, username, email FROM Users WHERE username=? OR email=?", (identifier, identifier))
+            cursor.execute("SELECT user_id, password, username, email FROM Users WHERE username=? OR email=?", (identifier, identifier))
             row = cursor.fetchone()
             conn.close()
 
@@ -83,14 +84,26 @@ class LoginPage(tk.Frame):
                 messagebox.showerror("Login Failed", "User not found, please register.")
                 return
 
-            stored_password = row[0]
+            user_id = row[0]
+            stored_password = row[1]
+            username = row[2]
+            email = row[3]
+
             if stored_password == hashed_pw:
-                messagebox.showinfo("Login Success", f"Welcome back {row[1]}!")
-                # navigate to homepage or dashboard
-                try:
-                    self.controller.show_frame("Bookings")
-                except Exception:
-                    pass
+                # Store user info on controller
+                self.controller.current_user_id = user_id
+                self.controller.current_username = {"id": user_id, "username": username, "email": email}
+
+                # Load passenger data if the frame has that method
+                passengers_frame = self.controller.frames.get("Passenger")
+                if passengers_frame and hasattr(passengers_frame, "load_passenger"):
+                    passengers_frame.load_passenger(user_id)
+
+                messagebox.showinfo("Login Success", f"Welcome back {username}!")
+                self.controller.show_frame("Passenger")
+                # Clear login fields
+                self.username_entry.delete(0, tk.END)
+                self.password_entry.delete(0, tk.END)
             else:
                 messagebox.showerror("Login Failed", "Incorrect password.")
 
@@ -169,11 +182,13 @@ class RegisterPage(tk.Frame):
         except sqlite3.Error as e:
             messagebox.showerror("Error", f"Failed to register user: {e}")
 
-class Bookings(tk.Frame):
+class Passenger(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        ttk.Label(self, text="Bookings Page - Under Construction", font=("Helvetica", 18)).pack(pady=20)
-        ttk.Button(self, text="Back to Homepage", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
+        ttk.Label(self, text="Your Page", font=("Helvetica", 18)).pack(pady=20)
+        ttk.Button(self, text="Book a Taxi (Coming Soon!)").pack(pady=10)
+        ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
+
 
 if __name__ == "__main__":
     app = TaxiBookings()
