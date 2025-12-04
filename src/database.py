@@ -41,7 +41,7 @@ try:
     cursor.execute("INSERT OR IGNORE INTO Users (username, email, password, date_of_birth, phone_number, address) VALUES (?, ?, ?, ?, ?, ?)", 
     ('jada black', 'jblack@gmail.com', 'mybigboop23', '1992-12-09', 890458, 'San Fernando'))
     connection.commit()
-    print("Sample user inserted or already exists.")
+    print("User inserted or already exists.")
 except sqlite3.Error as e:
     print(f"Error inserting user: {e}")
 
@@ -81,6 +81,7 @@ try:
     cursor.execute("INSERT OR IGNORE INTO Drivers (name, email, password, phone_number, license_number, vehicle_details, rating) VALUES (?, ?, ?, ?, ?, ?, ?)", 
     ('Samantha Cross', 'sammyc@gmail.com', 'safedriver99', 8940273, 124277, 'Toyota Camry 2020, Blue', 4.8))
     (connection.commit)
+    print("Driver inserted or already exists.")
 except sqlite3.Error as e:
     print(f"Error inserting driver: {e}")
 
