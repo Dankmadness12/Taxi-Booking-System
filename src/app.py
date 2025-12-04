@@ -181,7 +181,8 @@ class RegisterPage(tk.Frame):
             messagebox.showerror("Error", "A user with that email already exists.")
         except sqlite3.Error as e:
             messagebox.showerror("Error", f"Failed to register user: {e}")
-
+            
+#The Passenger Frame <-------------------------------------------------
 class Passenger(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
