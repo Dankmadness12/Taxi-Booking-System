@@ -44,5 +44,23 @@ try:
     print("User inserted successfully!")
 except sqlite3.Error as e:
     print(f"Error inserting user: {e}")
+
+#Create the Driver's Table <----------------------------------------
+try:
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Drivers (
+            driver_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL,
+            phone_number INTEGER,
+            license_number TEXT NOT NULL UNIQUE,
+            vehicle_details TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    connection.commit()
+except sqlite3.Error as e:
+    print(f"Error creating Drivers table: {e}")
         
 
