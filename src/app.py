@@ -22,7 +22,7 @@ class TaxiBookings(tk.Tk):
         
         #All of the Frames <-------------------------------------------------
         self.frames = {}
-        for Page in (Homepage, LoginPage, RegisterPage, Passenger):
+        for Page in (Homepage, LoginPage, RegisterPage, Passenger, DriverLoginPage, Driver):
             name = Page.__name__
             frame = Page(parent=container, controller=self)
             self.frames[name] = frame
@@ -38,7 +38,8 @@ class Homepage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         ttk.Label(self, text="Welcome to TaxiBookings Inc.", font=("Helvetica", 22)).pack(pady=30)
-        ttk.Button(self, text="Login", command=lambda: controller.show_frame("LoginPage")).pack(pady=20)
+        ttk.Button(self, text="Login as User", command=lambda: controller.show_frame("LoginPage")).pack(pady=20)
+        ttk.Button(self, text="Login as Driver", command=lambda: controller.show_frame("DriverLoginPage")).pack(pady=20)
         ttk.Button(self, text="Register", command=lambda: controller.show_frame("RegisterPage")).pack(pady=20)
         ttk.Button(self, text="Exit", command=controller.destroy).pack(pady=20)
 
@@ -109,6 +110,27 @@ class LoginPage(tk.Frame):
 
         except sqlite3.Error as e:
             messagebox.showerror("Error", f"Database error during login: {e}")
+
+#The Driver Login Page <-------------------------------------------------
+class DriverLoginPage(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        ttk.Label(self, text="Driver Login", font=("Helvetica", 18)).pack(pady=20)
+
+        tk.Label(self, text="Username or Email").pack()
+        self.username_entry = ttk.Entry(self)
+        self.username_entry.pack()
+
+        tk.Label(self, text="Password").pack(pady=10)
+        self.password_entry = ttk.Entry(self, show="*")
+        self.password_entry.pack(pady=5)
+
+        ttk.Button(self, text="Login", command=self.login_driver).pack(pady=15)
+        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
+
+    def login_driver(self):
+        # Placeholder for driver login logic
+        messagebox.showinfo("Info", "Driver login functionality coming soon!")
 
 #The Register Page <-------------------------------------------------
 class RegisterPage(tk.Frame):
@@ -181,7 +203,7 @@ class RegisterPage(tk.Frame):
             messagebox.showerror("Error", "A user with that email already exists.")
         except sqlite3.Error as e:
             messagebox.showerror("Error", f"Failed to register user: {e}")
-            
+
 #The Passenger Frame <-------------------------------------------------
 class Passenger(tk.Frame):
     def __init__(self, parent, controller):
@@ -190,6 +212,13 @@ class Passenger(tk.Frame):
         ttk.Button(self, text="Book a Taxi (Coming Soon!)").pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
+#The Driver Frame <-------------------------------------------------
+class Driver(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        ttk.Label(self, text="Driver's Page", font=("Helvetica", 18)).pack(pady=20)
+        ttk.Button(self, text="View Bookings").pack(pady=10)
+        ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
 if __name__ == "__main__":
     app = TaxiBookings()
