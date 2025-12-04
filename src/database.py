@@ -63,19 +63,6 @@ try:
 except sqlite3.Error as e:
     print(f"Error creating Drivers table: {e}")
 
-# try:
-#     # Check if rating column exists before adding it
-#     cursor.execute("PRAGMA table_info(Drivers)")
-#     columns = [row[1] for row in cursor.fetchall()]
-#     if "rating" not in columns:
-#         cursor.execute("ALTER TABLE Drivers ADD COLUMN rating REAL DEFAULT 5.0")
-#         connection.commit()
-#         print("Rating column added to Drivers table.")
-#     else:
-#         print("Rating column already exists in Drivers table.")
-# except sqlite3.Error as e:
-#     print(f"Error altering Drivers table: {e}")
-
 #Removed Rating Column <----------------------------------------
 try:
     cursor.execute("DELETE FROM Drivers WHERE rating")
