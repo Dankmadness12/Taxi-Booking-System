@@ -62,5 +62,10 @@ try:
     connection.commit()
 except sqlite3.Error as e:
     print(f"Error creating Drivers table: {e}")
-        
+
+try:
+    cursor.execute("ALTER TABLE Drivers ADD COLUMN rating REAL DEFAULT 5.0")
+    connection.commit()
+except sqlite3.Error as e:
+    print(f"Error altering Drivers table: {e}")
 
