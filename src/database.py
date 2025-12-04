@@ -29,3 +29,12 @@ except sqlite3.Error as e:
     except sqlite3.Error as e:
         print(f"Error creating table: {e}")
 
+    try:
+        cursor.execute("INSERT INTO Users (username, email, password, date_of_birth, phone_number, address) VALUES (?, ?, ?, ?, ?, ?)",) 
+        ('john_doe', 'john_dow@hotmail.com', 'password123', '1990-01-01', 7345503, 'San Juan')
+        connection.commit()
+        print("User inserted successfully!")
+    except sqlite3.Error as e:
+        print(f"Error inserting user: {e}")
+        
+
