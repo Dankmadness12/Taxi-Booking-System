@@ -63,23 +63,23 @@ try:
 except sqlite3.Error as e:
     print(f"Error creating Drivers table: {e}")
 
-try:
-    # Check if rating column exists before adding it
-    cursor.execute("PRAGMA table_info(Drivers)")
-    columns = [row[1] for row in cursor.fetchall()]
-    if "rating" not in columns:
-        cursor.execute("ALTER TABLE Drivers ADD COLUMN rating REAL DEFAULT 5.0")
-        connection.commit()
-        print("Rating column added to Drivers table.")
-    else:
-        print("Rating column already exists in Drivers table.")
-except sqlite3.Error as e:
-    print(f"Error altering Drivers table: {e}")
+# try:
+#     # Check if rating column exists before adding it
+#     cursor.execute("PRAGMA table_info(Drivers)")
+#     columns = [row[1] for row in cursor.fetchall()]
+#     if "rating" not in columns:
+#         cursor.execute("ALTER TABLE Drivers ADD COLUMN rating REAL DEFAULT 5.0")
+#         connection.commit()
+#         print("Rating column added to Drivers table.")
+#     else:
+#         print("Rating column already exists in Drivers table.")
+# except sqlite3.Error as e:
+#     print(f"Error altering Drivers table: {e}")
 
 #Adding a Driver to the Table <----------------------------------------
 try:
-    cursor.execute("INSERT OR IGNORE INTO Drivers (name, email, password, phone_number, license_number, vehicle_details, rating) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-    ('Samantha Cross', 'sammyc@gmail.com', 'safedriver99', 8940273, 124277, 'Toyota Camry 2020, Blue', 4.8))
+    cursor.execute("INSERT OR IGNORE INTO Drivers (name, email, password, phone_number, license_number, vehicle_details) VALUES (?, ?, ?, ?, ?, ?)", 
+    ('Samantha Cross', 'sammyc@gmail.com', 'safedriver99', 8940273, 124277, 'Toyota Camry 2020, Blue'))
     (connection.commit)
     print("Driver inserted or already exists.")
 except sqlite3.Error as e:
