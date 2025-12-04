@@ -1,3 +1,4 @@
+from cmath import e
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
@@ -62,7 +63,8 @@ class LoginPage(tk.Frame):
 
         ttk.Button(self, text="Login", command=self.login_user).pack(pady=15)
         ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
-
+    
+    #User Login Logic <-------------------------------------------------
     def login_user(self):
         identifier = self.username_entry.get().strip()
         password = self.password_entry.get()
@@ -112,7 +114,7 @@ class LoginPage(tk.Frame):
             messagebox.showerror("Error", f"Database error during login: {e}")
 
 #The Driver Login Page <-------------------------------------------------
-class DriverLoginPage(tk.Frame):
+class DriverLoginPage(tk.Frame): #Figure out driver login logic <-------------------------------------------------
     def __init__(self, parent, controller):
         super().__init__(parent)
         ttk.Label(self, text="Driver Login", font=("Helvetica", 18)).pack(pady=20)
@@ -132,9 +134,56 @@ class DriverLoginPage(tk.Frame):
         ttk.Button(self, text="Login", command=self.login_driver).pack(pady=15)
         ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
+    #Driver Login Logic <-------------------------------------------------------------
     def login_driver(self):
-        # Placeholder for driver login logic
-        messagebox.showinfo("Info", "Driver login functionality coming soon!")
+       identifier = self.username_entry.get().strip()
+       license_number = self.license_entry.get().strip()
+       password = self.password_entry.get()
+
+       if not identifier or not license_number or not password:
+           messagebox.showerror("Error", "Please enter username/email, license number, and password.")
+           return 
+       
+       #hashing the password <-------------------------------------------------
+       hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+       try:
+            conn = sqlite3.connect('database.db')
+            cursor = conn.cursor()
+            cursor.execute("SELECT driver_id, password, name, email FROM Drivers WHERE (name=? OR email=?) AND license_number=?", (identifier, identifier, license_number))
+            row = cursor.fetchone()
+            conn.close()
+
+            if row is None:
+                messagebox.showerror("Login Failed", "Driver not found, please check your credentials.")
+                return
+
+            driver_id = row[0]
+            stored_password = row[1]
+            name = row[2]
+            email = row[3]
+
+            if stored_password == hashed_pw:
+                # Store driver info on controller
+                self.controller.current_driver_id = driver_id
+                self.controller.current_driver = {"id": driver_id, "name": name, "email": email}
+
+                # Load driver data if the frame has that method
+                driver_frame = self.controller.frames.get("Driver")
+                if driver_frame and hasattr(driver_frame, "load_driver"):
+                    driver_frame.load_driver(driver_id)
+
+                messagebox.showinfo("Login Success", f"Welcome back {name}!")
+                self.controller.show_frame("Driver")
+                # Clear login fields
+                self.username_entry.delete(0, tk.END)
+                self.license_entry.delete(0, tk.END)
+                self.password_entry.delete(0, tk.END)
+            else:
+              messagebox.showerror("Login Failed", "Incorrect password.")
+
+        except sqlite3.Error as e:
+            messagebox.showerror("Error", f"Database error during login: {e}")
 
 #The Admin Login Page <-------------------------------------------------
 class AdminLoginPage(tk.Frame):
