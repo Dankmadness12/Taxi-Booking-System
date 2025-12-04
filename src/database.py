@@ -76,13 +76,18 @@ except sqlite3.Error as e:
 # except sqlite3.Error as e:
 #     print(f"Error altering Drivers table: {e}")
 
-#Adding a Driver to the Table <----------------------------------------
+#Removed Rating Column <----------------------------------------
 try:
-    cursor.execute("INSERT OR IGNORE INTO Drivers (name, email, password, phone_number, license_number, vehicle_details) VALUES (?, ?, ?, ?, ?, ?)", 
-    ('Samantha Cross', 'sammyc@gmail.com', 'safedriver99', 8940273, 124277, 'Toyota Camry 2020, Blue'))
-    (connection.commit)
-    print("Driver inserted or already exists.")
+    cursor.execute("DELETE FROM Drivers WHERE rating")
+    connection.commit()
+    print("Null ratings removed from Drivers table.")
+except sqlite3.Error as e:
+    print(f"Error deleting null ratings: {e}")
+
+try:
+    cursor.execute("INSERT OR IGNORE INTO Drivers (name, email, password, phone_number, license_number, vehicle_details) VALUES (?, ?, ?, ?, ?, ?)",
+                   ('Maya Afton', 'mafton@gmail.com', 'password5', 7860826, '292736', 'Toyota Camry 2020'))
+    connection.commit()
+    print("Sample driver inserted or already exists.")
 except sqlite3.Error as e:
     print(f"Error inserting driver: {e}")
-
-
