@@ -45,13 +45,57 @@ class Homepage(tk.Frame):
 class LoginPage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        tk.Label(self, text="Login", font=("Helvetica", 20)).pack(pady=20) #<-------- Login Title
-        tk.Label(self, text="Username").pack() #<-------- Username Label
-        ttk.Entry(self).pack() #<-------- Username Entry
-        tk.Label(self, text="Password").pack(pady=10) #<-------- Password Label
-        ttk.Entry(self, text="Password", show="*").pack(pady=5) #<-------- Password Entry
-        ttk.Button(self, text="Login").pack(pady=15) #<-------- Login Button
-        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10) #<-------- Back Button
+        # store controller for use in callbacks
+        self.controller = controller
+
+        tk.Label(self, text="Login", font=("Helvetica", 20)).pack(pady=20)
+
+        tk.Label(self, text="Username or Email").pack()
+        self.username_entry = ttk.Entry(self)
+        self.username_entry.pack()
+
+        tk.Label(self, text="Password").pack(pady=10)
+        self.password_entry = ttk.Entry(self, show="*")
+        self.password_entry.pack(pady=5)
+
+        ttk.Button(self, text="Login", command=self.login_user).pack(pady=15)
+        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
+
+    def login_user(self):
+        identifier = self.username_entry.get().strip()
+        password = self.password_entry.get()
+
+        if not identifier or not password:
+            messagebox.showerror("Error", "Please enter username/email and password.")
+            return
+
+        # hash password the same way as registration
+        hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+        try:
+            conn = sqlite3.connect('database.db')
+            cursor = conn.cursor()
+            cursor.execute("SELECT password, username, email FROM Users WHERE username=? OR email=?", (identifier, identifier))
+            row = cursor.fetchone()
+            conn.close()
+
+            if row is None:
+                messagebox.showerror("Login Failed", "User not found, please register.")
+                return
+
+            stored_password = row[0]
+            if stored_password == hashed_pw:
+                messagebox.showinfo("Login Success", f"Welcome {row[1]}!")
+                # navigate to homepage or dashboard
+                try:
+                    self.controller.show_frame("Homepage")
+                except Exception:
+                    pass
+            else:
+                messagebox.showerror("Login Failed", "Incorrect password.")
+
+        except sqlite3.Error as e:
+            messagebox.showerror("Error", f"Database error during login: {e}")
 
 #The Register Page <-------------------------------------------------
 class RegisterPage(tk.Frame):
