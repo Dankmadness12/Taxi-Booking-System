@@ -85,7 +85,8 @@ class RegisterPage(tk.Frame):
 
         ttk.Button(self, text="Register", command=self.register_user).pack(pady=7)
         ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
-
+    
+    #Register User Function <-------------------------------------------------
     def register_user(self):
         username = self.username_entry.get().strip()
         password = self.password_entry.get()
@@ -93,13 +94,16 @@ class RegisterPage(tk.Frame):
         dob = self.dob_entry.get().strip()
         email = self.email_entry.get().strip()
         address = self.address_entry.get().strip()
-
+        
+        #Error message for the empty fields <-------------------------------------------------
         if not username or not password or not email:
             messagebox.showerror("Error", "Username, Password, and Email are required.")
             return
-
+        
+        #Hash the password <-------------------------------------------------
         hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
-
+        
+        #Actually register as a user <-------------------------------------------------
         try:
             conn = sqlite3.connect('database.db')
             cursor = conn.cursor()
