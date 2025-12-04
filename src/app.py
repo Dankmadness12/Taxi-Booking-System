@@ -85,10 +85,10 @@ class LoginPage(tk.Frame):
 
             stored_password = row[0]
             if stored_password == hashed_pw:
-                messagebox.showinfo("Login Success", f"Welcome {row[1]}!")
+                messagebox.showinfo("Login Success", f"Welcome back {row[1]}!")
                 # navigate to homepage or dashboard
                 try:
-                    self.controller.show_frame("Homepage")
+                    self.controller.show_frame("Bookings")
                 except Exception:
                     pass
             else:
@@ -169,6 +169,11 @@ class RegisterPage(tk.Frame):
         except sqlite3.Error as e:
             messagebox.showerror("Error", f"Failed to register user: {e}")
 
+class Bookings(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        ttk.Label(self, text="Bookings Page - Under Construction", font=("Helvetica", 18)).pack(pady=20)
+        ttk.Button(self, text="Back to Homepage", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
 if __name__ == "__main__":
     app = TaxiBookings()
