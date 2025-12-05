@@ -169,7 +169,7 @@ class DriverLoginPage(tk.Frame):
             if stored_password == hashed_pw:
                 # Store user info on controller
                 self.controller.current_driver_id = driver_id
-                self.controller.current_username = {"id": driver_id, "username": name, "email": email, "phone": phone_number, "license": license_number}
+                self.controller.current_username = {"id": driver_id, "username": name, "email": email}
                 
                 # Load the driver data if the frame has that method
                 driver_frame = self.controller.frames.get("Driver")
