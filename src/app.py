@@ -138,7 +138,7 @@ class DriverLoginPage(tk.Frame):
     #Driver Login Logic <-------------------------------------------------------------
     def login_driver(self):
         identifier = self.username_entry.get().strip()
-        license_number = self.license_entry.get().strip()
+        license_number = self.license_entry.get()
         password = self.password_entry.get()
 
         if not identifier or not password:
@@ -168,7 +168,7 @@ class DriverLoginPage(tk.Frame):
             if stored_password == hashed_pw:
                 # Store user info on controller
                 self.controller.current_driver_id = driver_id
-                self.controller.current_username = {"id": driver_id, "username": name, "email": email}
+                self.controller.current_username = {"id": driver_id, "username": name, "email": email, "license number": license_number}
                 
                 # Load the driver data if the frame has that method
                 driver_frame = self.controller.frames.get("Driver")
