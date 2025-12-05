@@ -79,3 +79,12 @@ try:
     print("Sample driver inserted or already exists.")
 except sqlite3.Error as e:
     print(f"Error inserting driver: {e}")
+
+#Adding another driver! <----------------------------------------
+try:
+    cursor.execute("INSERT OR IGNORE INTO Drivers (name, email, password, phone_number, license_number, vehicle_details) VALUES (?, ?, ?, ?, ?, ?)",
+                   ('James Doakes', 'jdoakes@gmail.com', 'password6', 7860826, '123456', 'Honda Civic 2019'))
+    connection.commit()
+    print("Driver 2 inserted or already exists.")
+except sqlite3.Error as e:
+    print(f"Error inserting driver 2: {e}")
