@@ -41,6 +41,7 @@ class Homepage(tk.Frame):
         ttk.Label(self, text="Welcome to TaxiBookings Inc.", font=("Helvetica", 22)).pack(pady=30)
         ttk.Button(self, text="Login as User", command=lambda: controller.show_frame("LoginPage")).pack(pady=20)
         ttk.Button(self, text="Login as Driver", command=lambda: controller.show_frame("DriverLoginPage")).pack(pady=20)
+        ttk.Button(self, text="Login as Admin", command=lambda: controller.show_frame("AdminLoginPage")).pack(pady=20)
         ttk.Button(self, text="Register", command=lambda: controller.show_frame("RegisterPage")).pack(pady=20)
         ttk.Button(self, text="Exit", command=controller.destroy).pack(pady=20)
 
