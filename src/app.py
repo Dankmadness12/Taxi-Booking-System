@@ -114,7 +114,7 @@ class LoginPage(tk.Frame):
             messagebox.showerror("Error", f"Database error during login: {e}")
 
 #The Driver Login Page <-------------------------------------------------
-class DriverLoginPage(tk.Frame): #Figure out driver login logic <-------------------------------------------------
+class DriverLoginPage(tk.Frame): 
     def __init__(self, parent, controller):
         super().__init__(parent)
         ttk.Label(self, text="Driver Login", font=("Helvetica", 18)).pack(pady=20)
@@ -136,21 +136,21 @@ class DriverLoginPage(tk.Frame): #Figure out driver login logic <---------------
 
     #Driver Login Logic <-------------------------------------------------------------
     def login_driver(self):
-       identifier = self.username_entry.get().strip()
-       license_number = self.license_entry.get().strip()
-       password = self.password_entry.get()
+        identifier = self.username_entry.get().strip()
+        license_number = self.license_entry.get().strip()
+        password = self.password_entry.get()
 
-       if not identifier or not license_number or not password:
-           messagebox.showerror("Error", "Please enter username/email, license number, and password.")
-           return 
-       
-       #hashing the password <-------------------------------------------------
-       hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
+        if not identifier or not password:
+            messagebox.showerror("Error", "Please enter username/password and license number.")
+            return
 
-       try:
+        # hash password the same way as login and registration
+        hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+        try:
             conn = sqlite3.connect('database.db')
             cursor = conn.cursor()
-            cursor.execute("SELECT driver_id, password, name, email FROM Drivers WHERE (name=? OR email=?) AND license_number=?", (identifier, identifier, license_number))
+            cursor.execute("SELECT driver_id, name, email, password, phone_number, license_number, vehicle_details FROM Drivers WHERE email=? OR license_number=?", (identifier, identifier))
             row = cursor.fetchone()
             conn.close()
 
@@ -162,25 +162,26 @@ class DriverLoginPage(tk.Frame): #Figure out driver login logic <---------------
             stored_password = row[1]
             name = row[2]
             email = row[3]
+            phone_number = row[4]
+            license_number = row[5]
 
             if stored_password == hashed_pw:
-                # Store driver info on controller
+                # Store user info on controller
                 self.controller.current_driver_id = driver_id
-                self.controller.current_driver = {"id": driver_id, "name": name, "email": email}
-
-                # Load driver data if the frame has that method
+                self.controller.current_username = {"id": driver_id, "username": name, "email": email, "phone": phone_number, "license": license_number}
+                
+                # Load the driver data if the frame has that method
                 driver_frame = self.controller.frames.get("Driver")
                 if driver_frame and hasattr(driver_frame, "load_driver"):
-                    driver_frame.load_driver(driver_id)
+                    driver_frame.load_passenger(driver_id)
 
                 messagebox.showinfo("Login Success", f"Welcome back {name}!")
                 self.controller.show_frame("Driver")
                 # Clear login fields
                 self.username_entry.delete(0, tk.END)
-                self.license_entry.delete(0, tk.END)
                 self.password_entry.delete(0, tk.END)
             else:
-              messagebox.showerror("Login Failed", "Incorrect password.")
+                messagebox.showerror("Login Failed", "Incorrect credentials.")
 
         except sqlite3.Error as e:
             messagebox.showerror("Error", f"Database error during login: {e}")
@@ -287,7 +288,8 @@ class Passenger(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         ttk.Label(self, text="Your Page", font=("Helvetica", 18)).pack(pady=20)
-        ttk.Button(self, text="Book a Taxi (Coming Soon!)").pack(pady=10)
+        ttk.Button(self, text="Book a Taxi").pack(pady=10)
+        ttk.Button(self, text="View Bookings").pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
 #The Driver Frame <-------------------------------------------------
@@ -296,6 +298,7 @@ class Driver(tk.Frame):
         super().__init__(parent)
         ttk.Label(self, text="Driver's Page", font=("Helvetica", 18)).pack(pady=20)
         ttk.Button(self, text="View Bookings").pack(pady=10)
+        ttk.Button(self, text="Assigned Trips").pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
 #The Admin Frame <-------------------------------------------------
