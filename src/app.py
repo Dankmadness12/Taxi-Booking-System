@@ -163,8 +163,7 @@ class DriverLoginPage(tk.Frame):
             stored_password = row[1]
             name = row[2]
             email = row[3]
-            phone_number = row[4]
-            license_number = row[5]
+            license_number = row[4]
 
             if stored_password == hashed_pw:
                 # Store user info on controller
@@ -181,6 +180,7 @@ class DriverLoginPage(tk.Frame):
                 # Clear login fields
                 self.username_entry.delete(0, tk.END)
                 self.password_entry.delete(0, tk.END)
+                self.license_entry.delete(0, tk.END)
             else:
                 messagebox.showerror("Login Failed", "Incorrect credentials.")
 

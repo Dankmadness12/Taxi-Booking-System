@@ -21,4 +21,8 @@ if table_exists:
 else:
     print("Users table does not exist.")
 
+#Check if Drivers table exists
+cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='Drivers'")
+table_exists = cur.fetchone()
+print(f"Drivers table exists: {table_exists is not None}")
 conn.close()
