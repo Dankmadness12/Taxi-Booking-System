@@ -307,6 +307,7 @@ class Admin(tk.Frame):
         ttk.Label(self, text="Admin Page", font=("Helvetica", 18)).pack(pady=20)
         ttk.Button(self, text="Manage Users").pack(pady=10)
         ttk.Button(self, text="Manage Drivers").pack(pady=10)
+        ttk.Button(self, text="Manage Bookings").pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
 if __name__ == "__main__":
