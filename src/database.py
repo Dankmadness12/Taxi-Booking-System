@@ -81,4 +81,24 @@ try:
 except sqlite3.Error as e:
     print(f"Error inserting driver 2: {e}")
     
-    
+#Creating the Admin Table <--------------------------------------------------------------
+try:
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Bookings (
+            booking_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL, 
+            driver_id INTEGER NOT NULL,
+            pickup_location TEXT NOT NULL,
+            dropoff_location TEXT NOT NULL,
+            pickup_time TEXT,
+            status TEXT DEFAULT 'Pending',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            
+            FOREIGN KEY (user_id) REFERENCES Users(user_id)
+            FOREIGN KEY (driver_id) REFERENCES Drivers(driver_id)
+        )
+    ''')
+    connection.commit()
+    print('Booking Table successfully made!')
+except sqlite3.Error as e:
+    print (f"Error Creating Bookings Table: {e}")
