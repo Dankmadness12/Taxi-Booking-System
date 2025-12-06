@@ -81,7 +81,7 @@ try:
 except sqlite3.Error as e:
     print(f"Error inserting driver 2: {e}")
     
-#Creating the Admin Table <--------------------------------------------------------------
+#Creating the Bookings Table <--------------------------------------------------------------
 try:
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Bookings (
