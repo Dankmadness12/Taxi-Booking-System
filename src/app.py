@@ -193,6 +193,7 @@ class DriverLoginPage(tk.Frame):
 class AdminLoginPage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
+        self.controller = controller
         ttk.Label(self, text="Admin Login", font=("Helvetica", 18)).pack(pady=20)
 
         tk.Label(self, text="Admin Username").pack()
