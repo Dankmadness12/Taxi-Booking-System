@@ -366,6 +366,15 @@ class Admin(tk.Frame):
         ttk.Button(self, text="Manage Drivers").pack(pady=10)
         ttk.Button(self, text="Manage Bookings").pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
+        
+#The Bookings Frame <-------------------------------------------------
+class Bookings(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        ttk.Label(self, text="Choose a pickup date")
+        ttk.Label(self, text="Choose a pickup time")
+        ttk.Label(self, text="Choose a pickup location")
+        ttk.Label(self, text="Choose a dropoff location")
 
 if __name__ == "__main__":
     app = TaxiBookings()
