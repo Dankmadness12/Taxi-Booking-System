@@ -193,10 +193,6 @@ class AdminLoginPage(tk.Frame):
         super().__init__(parent)
         ttk.Label(self, text="Admin Login", font=("Helvetica", 18)).pack(pady=20)
 
-        tk.Label(self, text="Admin ID").pack()
-        self.admin_id_entry = ttk.Entry(self)
-        self.admin_id_entry.pack()
-
         tk.Label(self, text="Admin Username").pack()
         self.username_entry = ttk.Entry(self)
         self.username_entry.pack()
