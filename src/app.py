@@ -369,10 +369,10 @@ class Admin(tk.Frame):
 class Bookings(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        ttk.Button(self, text="Choose a pickup date").pack(pady=20)
-        ttk.Button(self, text="Choose a pickup time").pack(pady=20)
-        ttk.Button(self, text="Choose a pickup location").pack(pady=20)
-        ttk.Button(self, text="Choose a dropoff location").pack(pady=20)
+        ttk.Label(self, text="Book Your Bookings Today!").pack(pady=20)
+        ttk.Button(self, text="Choose a pickup time").pack(pady=10)
+        ttk.Button(self, text="Choose a pickup location").pack(pady=10)
+        ttk.Button(self, text="Choose a dropoff location").pack(pady=10)
 
 if __name__ == "__main__":
     app = TaxiBookings()
