@@ -288,7 +288,7 @@ class Passenger(tk.Frame):
         super().__init__(parent)
         ttk.Label(self, text="Your Page", font=("Helvetica", 18)).pack(pady=20)
         ttk.Button(self, text="Book a Taxi").pack(pady=10)
-        ttk.Button(self, text="View Bookings").pack(pady=10)
+        ttk.Button(self, text="View Your Bookings").pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
 #The Driver Frame <-------------------------------------------------
