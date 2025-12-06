@@ -27,7 +27,7 @@ try:
 except sqlite3.Error as e:
     print(f"Error creating table: {e}")
 
-# Adding sample users (will skip if email already exists) <----------------------------------------
+# Adding users (will skip if email already exists) <----------------------------------------
 try:
     cursor.execute("INSERT OR IGNORE INTO Users (username, email, password, date_of_birth, phone_number, address) VALUES (?, ?, ?, ?, ?, ?)", 
     ('john_doe', 'john_dow@hotmail.com', 'password123', '1990-01-01', 7345503, 'San Juan'))
@@ -36,7 +36,7 @@ try:
 except sqlite3.Error as e:
     print(f"Error inserting user: {e}")
 
-# Adding another sample user <----------------------------------------
+# Adding another user <----------------------------------------
 try:
     cursor.execute("INSERT OR IGNORE INTO Users (username, email, password, date_of_birth, phone_number, address) VALUES (?, ?, ?, ?, ?, ?)", 
     ('jada black', 'jblack@gmail.com', 'mybigboop23', '1992-12-09', 890458, 'San Fernando'))
