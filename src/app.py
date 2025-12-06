@@ -118,6 +118,7 @@ class LoginPage(tk.Frame):
 class DriverLoginPage(tk.Frame): 
     def __init__(self, parent, controller):
         super().__init__(parent)
+        self.controller = controller
         ttk.Label(self, text="Driver Login", font=("Helvetica", 18)).pack(pady=20)
 
         tk.Label(self, text="Username or Email").pack()
@@ -145,9 +146,6 @@ class DriverLoginPage(tk.Frame):
             messagebox.showerror("Error", "Please enter username/password and license number.")
             return
 
-        # hash password the same way as login and registration
-        hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
-
         try:
             conn = sqlite3.connect('database.db')
             cursor = conn.cursor()
@@ -168,13 +166,13 @@ class DriverLoginPage(tk.Frame):
             vehicle_details = row[6]
             
 
-            if stored_password == hashed_pw:
+            if stored_password == password:
                 # Store user info on controller
                 self.controller.current_driver_id = driver_id
                 self.controller.current_username = {"id": driver_id, "username": name, "email": email, "password": password, "phone number": phone_number, "license number": license_number, "vehicle details": vehicle_details}
                 
                 # Load the driver data if the frame has that method
-                if stored_password == hashed_pw and license_number == license_number:
+                if stored_password == password and license_number == license_number:
                     
                     self.controller.current_driver_id = driver_id
                     self.controller.current_username = {"id": driver_id, "username": name, "email": email, "license number": license_number, "password": password}
