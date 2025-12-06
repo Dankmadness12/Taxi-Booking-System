@@ -23,7 +23,7 @@ class TaxiBookings(tk.Tk):
         
         #All of the Frames <-------------------------------------------------
         self.frames = {}
-        for Page in (Homepage, LoginPage, RegisterPage, Passenger, DriverLoginPage, Driver, AdminLoginPage, Admin):
+        for Page in (Homepage, LoginPage, RegisterPage, Passenger, DriverLoginPage, Driver, AdminLoginPage, Admin, Bookings):
             name = Page.__name__
             frame = Page(parent=container, controller=self)
             self.frames[name] = frame
@@ -344,7 +344,7 @@ class Passenger(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         ttk.Label(self, text="Your Page", font=("Helvetica", 18)).pack(pady=20)
-        ttk.Button(self, text="Book a Taxi").pack(pady=10)
+        ttk.Button(self, text="Book a Taxi", command=lambda: controller.show_frame("Bookings")).pack(pady=10)
         ttk.Button(self, text="View Your Bookings").pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
@@ -384,6 +384,8 @@ class Bookings(tk.Frame):
         ttk.Label(self, text="Choose a dropoff location").pack()
         self.dropoff_location_entry = ttk.Entry(self)
         self.pickup_location_entry.pack(pady=10)
+        
+        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Passenger")).pack(pady=10)
         
 if __name__ == "__main__":
     app = TaxiBookings()
