@@ -383,7 +383,7 @@ class Bookings(tk.Frame):
         
         ttk.Label(self, text="Choose a dropoff location").pack()
         self.dropoff_location_entry = ttk.Entry(self)
-        self.pickup_location_entry.pack(pady=10)
+        self.dropoff_location_entry.pack(pady=10)
         
         ttk.Button(self, text="Back", command=lambda: controller.show_frame("Passenger")).pack(pady=10)
         
