@@ -63,14 +63,6 @@ try:
 except sqlite3.Error as e:
     print(f"Error creating Drivers table: {e}")
 
-#Removed Rating Column <----------------------------------------
-try:
-    cursor.execute("DELETE FROM Drivers WHERE rating")
-    connection.commit()
-    print("Null ratings removed from Drivers table.")
-except sqlite3.Error as e:
-    print(f"Error deleting null ratings: {e}")
-
 #Adding a driver! <----------------------------------------
 try:
     cursor.execute("INSERT OR IGNORE INTO Drivers (name, email, password, phone_number, license_number, vehicle_details) VALUES (?, ?, ?, ?, ?, ?)",
