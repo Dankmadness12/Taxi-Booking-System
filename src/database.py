@@ -102,3 +102,25 @@ try:
     print('Booking Table successfully made!')
 except sqlite3.Error as e:
     print (f"Error Creating Bookings Table: {e}")
+    
+#Creating the Admin Table <----------------------------------------------------------------
+try:
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Admin (
+            admin_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL,
+            email TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL, 
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    connection.commit()
+    print ("Admin Table Created Successfully!")
+except sqlite3.Error as e:
+    print (f"Error creating the Admin Table: {e}")
+                   
+                   
+                   
+                   
+                   
+     
