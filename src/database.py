@@ -118,6 +118,15 @@ try:
     print ("Admin Table Created Successfully!")
 except sqlite3.Error as e:
     print (f"Error creating the Admin Table: {e}")
+    
+#Adding an Admin <--------------------------------------------------------------------------------
+try:
+    cursor.execute("INSERT OR IGNORE INTO Admin (username, email, password) VALUES (?, ?, ?)",
+                   ('ADMIN ONE', 'blakecheddar@taxibookings.com', 'admin1'))
+    connection.commit()
+    print("Admin One inserted or already exists.")
+except sqlite3.Error as e:
+    print(f"Error inserting Admin One: {e}")
                    
                    
                    
