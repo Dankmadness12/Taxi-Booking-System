@@ -198,6 +198,10 @@ class AdminLoginPage(tk.Frame):
         tk.Label(self, text="Admin Username").pack()
         self.username_entry = ttk.Entry(self)
         self.username_entry.pack()
+        
+        ttk.Label(self, text="Admin Email").pack()
+        self.email_entry = ttk.Entry(self)
+        self.email_entry.pack()
 
         tk.Label(self, text="Password").pack(pady=10)
         self.password_entry = ttk.Entry(self, show="*")
@@ -205,10 +209,55 @@ class AdminLoginPage(tk.Frame):
 
         ttk.Button(self, text="Login", command=self.login_admin).pack(pady=15)
         ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
-
+    
+    
+    #The ADMIN Login Logic <---------------------------------------------------------------------------------
     def login_admin(self):
-        # Placeholder for admin login logic
-        messagebox.showinfo("Info", "Admin login functionality coming soon!")
+       identifier = self.username_entry.get().strip()
+       password = self.password_entry.get()
+
+       if not identifier or not password:
+            messagebox.showerror("Error", "Please enter username/email and password.")
+            return
+
+       try:
+            conn = sqlite3.connect('database.db')
+            cursor = conn.cursor()
+            cursor.execute("SELECT admin_id, username, email, password FROM Admin WHERE username=? OR email=? OR password=?", (identifier, identifier, identifier))
+            row = cursor.fetchone()
+            conn.close()
+
+            if row is None:
+                messagebox.showerror("Login Failed", "Invalid Admin Credentials, Try Again")
+                return
+
+            admin_id = row[0]
+            username = row[1]
+            email = row[2]
+            stored_password = row[3]
+
+            if stored_password == password:
+                # Store user info on controller
+                self.controller.current_user_id = admin_id
+                self.controller.current_username = {"id": admin_id, "username": username, "email": email}
+
+                # Load passenger data if the frame has that method
+                admin_frame = self.controller.frames.get("Admin")
+                if admin_frame and hasattr(admin_frame, "load_admin"):
+                    admin_frame.load_passenger(admin_id)
+
+                messagebox.showinfo("Login Success", f"Welcome home {username}!")
+                self.controller.show_frame("Admin")
+                # Clear login fields
+                self.username_entry.delete(0, tk.END)
+                self.email_entry.delete(0, tk.END)
+                self.password_entry.delete(0, tk.END)
+            else:
+                messagebox.showerror("Login Failed", "Incorrect Admin Password.")
+
+       except sqlite3.Error as e:
+         messagebox.showerror("Error", f"Database error during login: {e}")
+        
 
 #The Register Page <-------------------------------------------------
 class RegisterPage(tk.Frame):
