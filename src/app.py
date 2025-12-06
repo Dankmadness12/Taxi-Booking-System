@@ -385,6 +385,8 @@ class Bookings(tk.Frame):
         self.dropoff_location_entry = ttk.Entry(self)
         self.dropoff_location_entry.pack(pady=10)
         
+        ttk.Button(self, text="Book a Taxi").pack()
+        
         ttk.Button(self, text="Back", command=lambda: controller.show_frame("Passenger")).pack(pady=10)
         
 if __name__ == "__main__":
