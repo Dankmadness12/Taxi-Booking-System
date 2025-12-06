@@ -361,7 +361,7 @@ class Driver(tk.Frame):
 class Admin(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        ttk.Label(self, text="Welcome Home, Admin").pack(pady=20)
+        ttk.Label(self, text="Welcome Home, Admin", font=("Helvetica", 18)).pack(pady=20)
         ttk.Button(self, text="Assign Driver to Bookings").pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
         
@@ -369,7 +369,7 @@ class Admin(tk.Frame):
 class Bookings(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        ttk.Label(self, text="Book Your Bookings Today!").pack(pady=20)
+        ttk.Label(self, text="Book Your Bookings Today!", font=("Helvetica", 18)).pack(pady=20)
         ttk.Button(self, text="Choose a pickup time").pack(pady=10)
         ttk.Button(self, text="Choose a pickup location").pack(pady=10)
         ttk.Button(self, text="Choose a dropoff location").pack(pady=10)
