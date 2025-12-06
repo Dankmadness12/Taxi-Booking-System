@@ -161,21 +161,21 @@ class DriverLoginPage(tk.Frame):
 
             driver_id = row[0]
             stored_password = row[1]
-            name = row[2]
+            username = row[2]
             email = row[3]
             license_number = row[4]
 
             if stored_password == hashed_pw:
                 # Store user info on controller
                 self.controller.current_driver_id = driver_id
-                self.controller.current_username = {"id": driver_id, "username": name, "email": email, "license number": license_number}
+                self.controller.current_username = {"id": driver_id, "username": username, "email": email, "license number": license_number}
                 
                 # Load the driver data if the frame has that method
                 driver_frame = self.controller.frames.get("Driver")
                 if driver_frame and hasattr(driver_frame, "load_driver"):
                     driver_frame.load_passenger(driver_id)
 
-                messagebox.showinfo("Login Success", f"Welcome back {name}!")
+                messagebox.showinfo("Login Success", f"Welcome back {username}!")
                 self.controller.show_frame("Driver")
                 # Clear login fields
                 self.username_entry.delete(0, tk.END)
