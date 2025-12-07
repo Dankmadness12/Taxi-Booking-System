@@ -379,9 +379,9 @@ class Bookings(tk.Frame):
         
         #Choose the pickup time <-------------------------------------------------
         ttk.Label(self, text="Choose a pickup time").pack()
-        self.pickup_time_entry = ttk.Entry(self)
+        self.pickup_time_entry = ttk.Combobox(self)
         self.pickup_time_entry.pack(pady=10)
-        
+                
         #Choose the pickup location <-----------------------------------------------------
         ttk.Label(self, text="Choose a pickup location").pack()
         self.pickup_location_entry = ttk.Entry(self)
