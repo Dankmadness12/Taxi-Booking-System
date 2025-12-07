@@ -379,7 +379,11 @@ class Bookings(tk.Frame):
         
         #Choose the pickup time <-------------------------------------------------
         ttk.Label(self, text="Choose a pickup time").pack()
-        self.pickup_time_entry = ttk.Combobox(self)
+        time = []
+        for hour in range(0, 24):
+            time.append(f"{hour:02d}:00")
+            time.append(f"{hour:02d}:30")
+        self.pickup_time_entry = ttk.Combobox(self, values=time, state='readonly')
         self.pickup_time_entry.pack(pady=10)
                 
         #Choose the pickup location <-----------------------------------------------------
