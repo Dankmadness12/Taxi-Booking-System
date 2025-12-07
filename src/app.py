@@ -372,18 +372,22 @@ class Bookings(tk.Frame):
         super().__init__(parent)
         ttk.Label(self, text="Book Your Booking (HAH) Today!", font=("Helvetica", 18)).pack(pady=20)
         
+        #Choose a Date <--------------------------------------------------------
         ttk.Label(self, text="Choose a Date").pack(pady=10)
         self.date_entry = DateEntry(self, width=10)
         self.date_entry.pack(pady=5)
         
+        #Choose the pickup time <-------------------------------------------------
         ttk.Label(self, text="Choose a pickup time").pack()
         self.pickup_time_entry = ttk.Entry(self)
         self.pickup_time_entry.pack(pady=10)
         
+        #Choose the pickup location <-----------------------------------------------------
         ttk.Label(self, text="Choose a pickup location").pack()
         self.pickup_location_entry = ttk.Entry(self)
         self.pickup_location_entry.pack(pady=10)
         
+        #Choose a dropoff location <-------------------------------------------------------
         ttk.Label(self, text="Choose a dropoff location").pack()
         self.dropoff_location_entry = ttk.Entry(self)
         self.dropoff_location_entry.pack(pady=10)
