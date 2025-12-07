@@ -388,12 +388,12 @@ class Bookings(tk.Frame):
                 
         #Choose the pickup location <-----------------------------------------------------
         ttk.Label(self, text="Choose a pickup location").pack()
-        self.pickup_location_entry = ttk.Entry(self)
+        self.pickup_location_entry = ttk.Combobox(self, values=["Port-of-Spain", "Chaguanas", "Couva", "Freeport", "Carapichaima", "Chase Village", "Arima", "San Fernando"], state='readonly')
         self.pickup_location_entry.pack(pady=10)
         
         #Choose a dropoff location <-------------------------------------------------------
         ttk.Label(self, text="Choose a dropoff location").pack()
-        self.dropoff_location_entry = ttk.Entry(self)
+        self.dropoff_location_entry = ttk.Combobox(self, values=["Port-of-Spain", "Chaguanas", "Couva", "Freeport", "Carapichaima", "Chase Village", "Arima", "San Fernando"], state='readonly')
         self.dropoff_location_entry.pack(pady=10)
         
         ttk.Button(self, text="Book a Taxi").pack(pady=10)
