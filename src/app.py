@@ -392,7 +392,7 @@ class Bookings(tk.Frame):
         
         ttk.Button(self, text="Back", command=lambda: controller.show_frame("Passenger")).pack(pady=10)
         
-class Booking_Display(tk.frame):
+class Booking_Display(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         ttk.Label(self, text="Bookings", font=("Helvetica", 18)).pack(pady=20)
