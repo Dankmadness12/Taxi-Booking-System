@@ -370,7 +370,7 @@ class Admin(tk.Frame):
 class Bookings(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
-        ttk.Label(self, text="Book Your Bookings Today!", font=("Helvetica", 18)).pack(pady=20)
+        ttk.Label(self, text="Book Your Booking (HAH) Today!", font=("Helvetica", 18)).pack(pady=20)
         
         ttk.Label(self, text="Choose a Date").pack(pady=10)
         self.date_entry = DateEntry(self, width=10)
@@ -391,6 +391,11 @@ class Bookings(tk.Frame):
         ttk.Button(self, text="Book a Taxi").pack(pady=10)
         
         ttk.Button(self, text="Back", command=lambda: controller.show_frame("Passenger")).pack(pady=10)
+        
+class Booking_Display(tk.frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        ttk.Label(self, text="Bookings", font=("Helvetica", 18)).pack(pady=20)
         
 if __name__ == "__main__":
     app = TaxiBookings()
