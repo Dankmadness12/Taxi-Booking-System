@@ -128,7 +128,24 @@ try:
 except sqlite3.Error as e:
     print(f"Error inserting Admin One: {e}")
     
-
+#Creating the Bookings Display Table <-----------------------------------------------------------------
+try:
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Bookings_Display (
+            bookings_display INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            date TEXT NOT NULL,
+            time TEXT NOT NULL,
+            pickup_location TEXT NOT NULL,
+            dropoff_location TEXT NOT NULL,
+            
+            FOREIGN KEY (user_id) REFERENCES Users(user_id)
+        )
+    ''')
+    connection.commit()
+    print('Bookings Display Table successfully made!')
+except sqlite3.Error as e:
+    print (f"Error Creating Bookings Display Table: {e}")
     
 
                    
