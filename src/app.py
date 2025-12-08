@@ -400,6 +400,17 @@ class Bookings(tk.Frame):
         
         ttk.Button(self, text="Back", command=lambda: controller.show_frame("Passenger")).pack(pady=10)
         
+    #Bookings Page Logic <------------------------------------------------------------------------------------
+    def make_bookings(self):
+        date = self.date_entry.get().strip()
+        pickup_time = self.pickup_time_entry.get().strip()
+        pickup_location = self.pickup_location_entry.get().strip()
+        dropoff_location = self.dropoff_location_entry.get().strip()
+            
+        if pickup_location.lower() == dropoff_location.lower():
+            messagebox.showerror("Invalid", "Please choose a seperate pickup and dropoff location")
+            return
+        
 class Booking_Display(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
