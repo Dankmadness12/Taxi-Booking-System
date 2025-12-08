@@ -412,6 +412,10 @@ class Bookings(tk.Frame):
             messagebox.showerror("Invalid", "Please choose a seperate pickup and dropoff location")
             return
         
+        if not date:
+            messagebox.showerror("Error", "Please Enter a Date")
+            return
+        
         if not pickup_time:
             messagebox.showerror("Error", "Please select a time")
             return
