@@ -396,7 +396,7 @@ class Bookings(tk.Frame):
         self.dropoff_location_entry = ttk.Combobox(self, values=["Port-of-Spain", "Chaguanas", "Couva", "Freeport", "Carapichaima", "Chase Village", "Arima", "San Fernando"], state='readonly')
         self.dropoff_location_entry.pack(pady=10)
         
-        ttk.Button(self, text="Book a Taxi").pack(pady=10)
+        ttk.Button(self, text="Book a Taxi", command=self.make_bookings).pack(pady=10)
         
         ttk.Button(self, text="Back", command=lambda: controller.show_frame("Passenger")).pack(pady=10)
         
@@ -416,7 +416,7 @@ class Bookings(tk.Frame):
             messagebox.showerror("Error", "Please select a time")
             return
         
-        if not pickup_location() or not dropoff_location():
+        if not pickup_location or not dropoff_location:
             messagebox.showerror("Error", "Please enter your desired pickup/dropoff locations")
             return
         
