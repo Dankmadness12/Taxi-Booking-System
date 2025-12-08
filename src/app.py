@@ -434,7 +434,9 @@ class Bookings(tk.Frame):
             conn.close()
                            
             messagebox.showinfo("Success", "Booking Created Successfully!")
-            self.controller.show_frame("Booking_Display")
+            display_frame = self.controller.frames["Bookings_Display"]
+            display_frame.load_bookings()
+            self.controller.show_frame("Bookings_Display")
             
         except sqlite3.Error as e:
           messagebox.showerror("Database error", str(e))
