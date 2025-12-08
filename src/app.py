@@ -451,26 +451,40 @@ class Booking_Display(tk.Frame):
         ttk.Label(self, text="Created Bookings", font=("Helvetica", 18)).pack(pady=20)
         
         #The Table to Display the Bookings made <---------------------------------------------------------
-        table = ttk.Treeview(self)
-        table.pack(fill='both', expand=True)
+        self.table = ttk.Treeview(self)
+        self.table.pack(fill='both', expand=True)
         
         #Naming the Columns <-------------------------------------------------------------
-        table['columns']=('Date', 'Time', 'Pickup Location', 'Dropoff Location')
-        table['show'] = 'headings'
+        self.table['columns']=('Date', 'Time', 'Pickup Location', 'Dropoff Location')
+        self.table['show'] = 'headings'
         
         #Column Format (How's your day going?) <----------------------------------------------------
-        table.column('Date', anchor=tk.W, width=110)
-        table.column('Time', anchor=tk.W, width=100)
-        table.column('Pickup Location', anchor=tk.W, width=150)
-        table.column('Dropoff Location', anchor=tk.W, width=150)
+        self.table.column('Date', anchor=tk.W, width=110)
+        self.table.column('Time', anchor=tk.W, width=100)
+        self.table.column('Pickup Location', anchor=tk.W, width=150)
+        self.table.column('Dropoff Location', anchor=tk.W, width=150)
         
         #The Table Headings <-------------------------------------------------------------------------
-        table.heading('Date', text='Date', anchor=tk.W)
-        table.heading('Time', text='Time', anchor=tk.W)
-        table.heading('Pickup Location', text='Dropoff Location', anchor=tk.W)
-        table.heading('Dropoff Location', text='Dropoff Location', anchor=tk.W)
+        self.table.heading('Date', text='Date', anchor=tk.W)
+        self.table.heading('Time', text='Time', anchor=tk.W)
+        self.table.heading('Pickup Location', text='Dropoff Location', anchor=tk.W)
+        self.table.heading('Dropoff Location', text='Dropoff Location', anchor=tk.W)
         
-        table.pack(expand=True, fill=tk.BOTH)
+        self.table.pack(expand=True, fill=tk.BOTH)
+        
+    #Booking Display Logicccccc <------------------------------------------------------------------------
+    def load_bookings(self):
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT date, time, pickup_location, dropoff_location FROM Bookings_Display WHERE user_id=?", 
+                       (self.controller.user_id,)
+                    )
+        
+        rows = cursor.fetchall()
+        conn.close()
+        
+        for row in rows:
+            self.table.insert("", "end", values=row)
         
 if __name__ == "__main__":
     app = TaxiBookings()
