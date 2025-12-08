@@ -407,9 +407,15 @@ class Bookings(tk.Frame):
         pickup_location = self.pickup_location_entry.get().strip()
         dropoff_location = self.dropoff_location_entry.get().strip()
             
+        #Validation Checks and stuff <-------------------------------------------------------------    
         if pickup_location.lower() == dropoff_location.lower():
             messagebox.showerror("Invalid", "Please choose a seperate pickup and dropoff location")
             return
+        
+        if not pickup_time:
+            messagebox.showerror("Error", "Please select a time")
+            
+        
         
 class Booking_Display(tk.Frame):
     def __init__(self, parent, controller):
