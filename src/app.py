@@ -477,7 +477,7 @@ class Booking_Display(tk.Frame):
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
         cursor.execute("SELECT date, time, pickup_location, dropoff_location FROM Bookings_Display WHERE user_id=?", 
-                       (self.controller.user_id,)
+                       (self.controller.current_user_id,)
                     )
         
         rows = cursor.fetchall()
