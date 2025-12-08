@@ -132,7 +132,7 @@ except sqlite3.Error as e:
 try:
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Bookings_Display (
-            bookings_display_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            bookings_display INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER,
             date TEXT NOT NULL,
             time TEXT NOT NULL,
@@ -146,6 +146,13 @@ try:
     print('Bookings Display Table successfully made!')
 except sqlite3.Error as e:
     print (f"Error Creating Bookings Display Table: {e}")
+    
+try:
+    cursor.execute("ALTER TABLE Bookings_Display bookings_display TO bookings_display_id")
+    connection.commit()
+    print("bookings_display successfully re-named")
+except sqlite3.Error as e:
+    print(f"ERROR re-naming bookings_display")
     
 
                    
