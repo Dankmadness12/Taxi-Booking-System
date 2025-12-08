@@ -132,7 +132,7 @@ except sqlite3.Error as e:
 try:
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Bookings_Display (
-            bookings_display INTEGER PRIMARY KEY AUTOINCREMENT,
+            bookings_display_id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER,
             date TEXT NOT NULL,
             time TEXT NOT NULL,
