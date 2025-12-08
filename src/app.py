@@ -432,7 +432,8 @@ class Bookings(tk.Frame):
                         VALUES (?, ?, ?, ?, ?)""", (self.controller.current_user_id, date, pickup_time, pickup_location, dropoff_location))
             conn.commit()
             conn.close()
-                           
+            
+            #The Message that the bookings was a success! And the display frame to......display the frame <-----------------------------------
             messagebox.showinfo("Success", "Booking Created Successfully!")
             display_frame = self.controller.frames["Booking_Display"]
             display_frame.load_bookings()
@@ -448,6 +449,28 @@ class Booking_Display(tk.Frame):
         super().__init__(parent)
         self.controller = controller
         ttk.Label(self, text="Created Bookings", font=("Helvetica", 18)).pack(pady=20)
+        
+        #The Table to Display the Bookings made <---------------------------------------------------------
+        table = ttk.Treeview(self)
+        table.pack(fill='both', expand=True)
+        
+        #Naming the Columns <-------------------------------------------------------------
+        table['columns']=('Date', 'Time', 'Pickup Location', 'Dropoff Location')
+        table['show'] = 'headings'
+        
+        #Column Format (How's your day going?) <----------------------------------------------------
+        table.column('Date', anchor=tk.W, width=110)
+        table.column('Time', anchor=tk.W, width=100)
+        table.column('Pickup Location', anchor=tk.W, width=150)
+        table.column('Dropoff Location', anchor=tk.W, width=150)
+        
+        #The Table Headings <-------------------------------------------------------------------------
+        table.heading('Date', text='Date', anchor=tk.W)
+        table.heading('Time', text='Time', anchor=tk.W)
+        table.heading('Pickup Location', text='Dropoff Location', anchor=tk.W)
+        table.heading('Dropoff Location', text='Dropoff Location', anchor=tk.W)
+        
+        table.pack(expand=True, fill=tk.BOTH)
         
 if __name__ == "__main__":
     app = TaxiBookings()
