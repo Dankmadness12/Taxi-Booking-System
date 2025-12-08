@@ -24,7 +24,7 @@ class TaxiBookings(tk.Tk):
         
         #All of the Frames <-------------------------------------------------
         self.frames = {}
-        for Page in (Homepage, LoginPage, RegisterPage, Passenger, DriverLoginPage, Driver, AdminLoginPage, Admin, Bookings):
+        for Page in (Homepage, LoginPage, RegisterPage, Passenger, DriverLoginPage, Driver, AdminLoginPage, Admin, Bookings, Booking_Display):
             name = Page.__name__
             frame = Page(parent=container, controller=self)
             self.frames[name] = frame
@@ -370,6 +370,7 @@ class Admin(tk.Frame):
 class Bookings(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
+        self.controller = controller
         ttk.Label(self, text="Book Your Booking (HAH) Today!", font=("Helvetica", 18)).pack(pady=20)
         
         #Choose a Date <--------------------------------------------------------
@@ -424,13 +425,26 @@ class Bookings(tk.Frame):
             messagebox.showerror("Error", "Please enter your desired pickup/dropoff locations")
             return
         
-        messagebox.showinfo("Success", "Booking Created Successfully!")
-        return
+        try:
+            conn = sqlite3.connect('database.db')
+            cursor = conn.cursor()
+            cursor.execute("""INSERT INTO Bookings_Display (user_id, date, time, pickup_location, dropoff_location) 
+                        VALUES (?, ?, ?, ?, ?)""", (self.controller.current_user_id, date, pickup_time, pickup_location, dropoff_location))
+            conn.commit()
+            conn.close()
+                           
+            messagebox.showinfo("Success", "Booking Created Successfully!")
+            self.controller.show_frame("Booking_Display")
+            
+        except sqlite3.Error as e:
+          messagebox.showerror("Database error", str(e))
+        
         
         
 class Booking_Display(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
+        self.controller = controller
         ttk.Label(self, text="Created Bookings", font=("Helvetica", 18)).pack(pady=20)
         
 if __name__ == "__main__":
