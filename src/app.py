@@ -455,16 +455,18 @@ class Booking_Display(tk.Frame):
         self.table.pack(fill='both', expand=True)
         
         #Naming the Columns <-------------------------------------------------------------
-        self.table['columns']=('Date', 'Time', 'Pickup Location', 'Dropoff Location')
+        self.table['columns']=('User ID', 'Date', 'Time', 'Pickup Location', 'Dropoff Location')
         self.table['show'] = 'headings'
         
         #Column Format (How's your day going?) <----------------------------------------------------
+        self.table.column('User ID', anchor=tk.W, width=50)
         self.table.column('Date', anchor=tk.W, width=110)
         self.table.column('Time', anchor=tk.W, width=100)
         self.table.column('Pickup Location', anchor=tk.W, width=150)
         self.table.column('Dropoff Location', anchor=tk.W, width=150)
         
         #The Table Headings <-------------------------------------------------------------------------
+        self.table.heading('User ID', text='User ID', anchor=tk.W)
         self.table.heading('Date', text='Date', anchor=tk.W)
         self.table.heading('Time', text='Time', anchor=tk.W)
         self.table.heading('Pickup Location', text='Dropoff Location', anchor=tk.W)
@@ -478,7 +480,7 @@ class Booking_Display(tk.Frame):
     def load_bookings(self):
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
-        cursor.execute("SELECT date, time, pickup_location, dropoff_location FROM Bookings_Display WHERE user_id=?", 
+        cursor.execute("SELECT user_ID, date, time, pickup_location, dropoff_location FROM Bookings_Display WHERE user_id=?", 
                        (self.controller.current_user_id,)
                     )
         
