@@ -472,6 +472,7 @@ class Booking_Display(tk.Frame):
         
         self.table.pack(expand=True, fill=tk.BOTH)
         ttk.Button(self, text="Back", command=lambda: controller.show_frame("Passenger")).pack(pady=10)
+        ttk.Button(self, text="Cancel a Booking").pack(pady=10)
         
     #Booking Display Logicccccc <------------------------------------------------------------------------
     def load_bookings(self):
