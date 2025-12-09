@@ -487,6 +487,7 @@ class Booking_Display(tk.Frame):
         rows = cursor.fetchall()
         conn.close()
         
+        #To add a new row <-----------------------------------------------------------------------------
         for row in rows:
             self.table.insert("", "end", values=row)
         
