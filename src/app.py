@@ -346,7 +346,7 @@ class Passenger(tk.Frame):
         super().__init__(parent)
         ttk.Label(self, text="Your Page", font=("Helvetica", 18)).pack(pady=20)
         ttk.Button(self, text="Book a Taxi", command=lambda: controller.show_frame("Bookings")).pack(pady=10)
-        ttk.Button(self, text="View Your Bookings").pack(pady=10)
+        ttk.Button(self, text="View Your Bookings", command=lambda: controller.show_frame("Booking_Display")).pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
 #The Driver Frame <-------------------------------------------------
@@ -355,7 +355,7 @@ class Driver(tk.Frame):
         super().__init__(parent)
         ttk.Label(self, text="Driver's Page", font=("Helvetica", 18)).pack(pady=20)
         ttk.Button(self, text="View Bookings").pack(pady=10)
-        ttk.Button(self, text="Assigned Trips").pack(pady=10)
+        ttk.Button(self, text="Assigned Trips", command=lambda: controller.show_frame("Booking_Display")).pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
 #The Admin Frame <-------------------------------------------------
@@ -471,6 +471,7 @@ class Booking_Display(tk.Frame):
         self.table.heading('Dropoff Location', text='Dropoff Location', anchor=tk.W)
         
         self.table.pack(expand=True, fill=tk.BOTH)
+        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Passenger")).pack(pady=10)
         
     #Booking Display Logicccccc <------------------------------------------------------------------------
     def load_bookings(self):
