@@ -455,32 +455,32 @@ class Booking_Display(tk.Frame):
         self.table.pack(fill='both', expand=True)
         
         #Naming the Columns <-------------------------------------------------------------
-        self.table['columns']=('User ID', 'Date', 'Time', 'Pickup Location', 'Dropoff Location')
+        self.table['columns']=('Bookings Display ID', 'Date', 'Time', 'Pickup Location', 'Dropoff Location')
         self.table['show'] = 'headings'
         
         #Column Format (How's your day going?) <----------------------------------------------------
-        self.table.column('User ID', anchor=tk.W, width=50)
+        self.table.column('Bookings Display ID', anchor=tk.W, width=100)
         self.table.column('Date', anchor=tk.W, width=110)
         self.table.column('Time', anchor=tk.W, width=100)
         self.table.column('Pickup Location', anchor=tk.W, width=150)
         self.table.column('Dropoff Location', anchor=tk.W, width=150)
         
         #The Table Headings <-------------------------------------------------------------------------
-        self.table.heading('User ID', text='User ID', anchor=tk.W)
+        self.table.heading('Bookings Display ID', text='Bookings Display ID', anchor=tk.W)
         self.table.heading('Date', text='Date', anchor=tk.W)
         self.table.heading('Time', text='Time', anchor=tk.W)
-        self.table.heading('Pickup Location', text='Dropoff Location', anchor=tk.W)
+        self.table.heading('Pickup Location', text='Pickup Location', anchor=tk.W)
         self.table.heading('Dropoff Location', text='Dropoff Location', anchor=tk.W)
         
         self.table.pack(expand=True, fill=tk.BOTH)
         ttk.Button(self, text="Back", command=lambda: controller.show_frame("Passenger")).pack(pady=10)
-        ttk.Button(self, text="Cancel a Booking").pack(pady=10)
+        ttk.Button(self, text="Cancel a Booking", command=self.booking_cancel).pack(pady=10)
         
     #Booking Display Logicccccc <------------------------------------------------------------------------
     def load_bookings(self):
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
-        cursor.execute("SELECT user_ID, date, time, pickup_location, dropoff_location FROM Bookings_Display WHERE user_id=?", 
+        cursor.execute("SELECT bookings_display_id, date, time, pickup_location, dropoff_location FROM Bookings_Display WHERE user_id=?", 
                        (self.controller.current_user_id,)
                     )
         
@@ -490,6 +490,29 @@ class Booking_Display(tk.Frame):
         #To add a new row <-----------------------------------------------------------------------------
         for row in rows:
             self.table.insert("", "end", values=row)
+            
+    #Cancel a Booking dawg <------------------------------------------------------------------------------
+    def booking_cancel(self):
+        chosen = self.table.focus()
+        if not chosen: messagebox.showerror("Action Error", "Please select a booking to cancel")
+        return
+    
+        booking = self.table.item(chosen, "values")
+        booking_id = booking[0]
+        
+        confirm = messagebox.askyesno("Please Confirm", "Do you want to cancel this booking? Are you sure?")
+        if not confirm:
+            return
+        
+        #Now CTRL + ALT + DELETE from the database itself <-----------------------------------------------------------------
+        conn = sqlite3.connect("database.db")
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM Bookings_Display WHERE bookings_display_id=?", (booking_id,))
+        conn.commit()
+        conn.close()
+        
+        self.table.delete(chosen)
+        messagebox.showinfo("Successfully Cancelled!", "You've successfully cancelled your booking! Yay?")
         
 if __name__ == "__main__":
     app = TaxiBookings()
