@@ -23,7 +23,7 @@ class TaxiBookings(tk.Tk):
         
         #All of the Frames <-------------------------------------------------
         self.frames = {}
-        for Page in (Homepage, LoginPage, RegisterPage, Passenger, DriverLoginPage, Driver, AdminLoginPage, Admin, Bookings, Booking_Display):
+        for Page in (Homepage, LoginPage, RegisterPage, Passenger, DriverLoginPage, Driver, AdminLoginPage, Admin, Bookings, Booking_Display, AdminAssign):
             name = Page.__name__
             frame = Page(parent=container, controller=self)
             self.frames[name] = frame
@@ -543,6 +543,35 @@ class Booking_Display(tk.Frame):
             self.controller.show_frame("Driver")
         else:
             self.controller.show_frame("Passenger")
+            
+#The Admin Assign Frame <-----------------------------------------------------------------------------------
+class AdminAssign(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.controller = controller
+        ttk.Label(self, text="Admin Assign", font=("Helvetica", 18)).pack(pady=20)
+    
+    
+        self.table = ttk.Treeview(self)
+        self.table.pack(fill='both', expand=True)
+        
+        #Naming the Columns <-------------------------------------------------------------
+        self.table['columns']=('Bookings Display ID', 'Date', 'Time', 'Pickup Location', 'Dropoff Location')
+        self.table['show'] = 'headings'
+        
+        for col in self.table['columns']:
+            self.table.column(col, anchor=tk.W, width=120)
+            self.table.heading(col, text=col, anchor=tk.W)
+            
+        self.table.pack(expand=True, fill=tk.BOTH, pady=10)    
+        
+        ttk.Label(self, text="Assign Driver to Booking").pack(pady=10)
+        self.driver_combo = ttk.Combobox(self, state='readonly')
+        self.driver_combo.pack(pady=5)
+        
+        ttk.Button(self, text="Assign Driver", command=self.assign_driver).pack(pady=10)
+        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
+    
         
 if __name__ == "__main__":
     app = TaxiBookings()
