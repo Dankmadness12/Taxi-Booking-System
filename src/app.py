@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from tkcalendar import DateEntry
+from datetime import datetime, timedelta
 import sqlite3
 import hashlib
 
@@ -621,6 +622,7 @@ class AdminAssign(tk.Frame):
         
         driver_id = self.driver_map[selected_driver]
         
+        #Check for overlapping bookings <------------------------------------------------------------------------------------
         try:
             conn = sqlite3.connect('database.db')
             cursor = conn.cursor()
@@ -632,6 +634,44 @@ class AdminAssign(tk.Frame):
             self.table.delete(selected_item)
         except sqlite3.Error as e:
             messagebox.showerror("Database Error", f"Failed to assign driver: {e}")
+            
+        if self.overlap(driver_id, booking[1], booking[2]):
+            messagebox.showwarning("Scheduling Conflict", "Warning: The assigned driver has overlapping bookings!")
+            return
+        
+        try:
+            conn = sqlite3.connect('database.db')
+            cursor = conn.cursor()
+            cursor.execute("UPDATE Bookings_Display SET driver_id=? WHERE bookings_display_id=?", (driver_id, booking_id))
+            conn.commit()
+            conn.close()
+            
+            messagebox.showinfo("Success", "Driver assigned successfully!")
+            self.table.delete(selected_item)
+            
+        except sqlite3.Error as e:
+            messagebox.showerror("System Error", f"Failed to assign driver: {e}")
+    
+    #Driver Overlap Check <------------------------------------------------------------------------------------
+    def overlap(self, driver_id, date, newtime):
+       conn = sqlite3.connect('database.db')
+       cursor = conn.cursor()
+       
+       cursor.execute("SELECT time FROM Bookings_Display WHERE driver_id=? AND date=?", (driver_id, date))
+       times = cursor.fetchall()
+       conn.close()
+       
+       start = datetime.strptime(newtime, "%H:%M")
+       end = start + timedelta(minutes=60)
+       
+       for (current_time,) in times:
+           current_start = datetime.strptime(current_time, "%H:%M")
+           current_end = current_start + timedelta(minutes=60)
+           
+           if (start < current_end) and (end > current_start):
+               return True
+           
+           return False
         
 if __name__ == "__main__":
     app = TaxiBookings()
