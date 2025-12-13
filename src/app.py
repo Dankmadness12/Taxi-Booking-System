@@ -494,8 +494,9 @@ class Booking_Display(tk.Frame):
     #Cancel a Booking dawg <------------------------------------------------------------------------------
     def booking_cancel(self):
         chosen = self.table.focus()
-        if not chosen: messagebox.showerror("Action Error", "Please select a booking to cancel")
-        return
+        if not chosen: 
+            messagebox.showerror("Action Error", "Please select a booking to cancel")
+            return
     
         booking = self.table.item(chosen, "values")
         booking_id = booking[0]
