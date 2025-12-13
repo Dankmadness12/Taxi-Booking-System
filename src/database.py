@@ -146,6 +146,14 @@ try:
     print('Bookings Display Table successfully made!')
 except sqlite3.Error as e:
     print (f"Error Creating Bookings Display Table: {e}")
+    
+#Adding driver_id column to Bookings_Display Table <--------------------------------------------------------------
+try:
+    cursor.execute("ALTER TABLE Bookings_Display ADD COLUMN driver_id INTEGER",)
+    connection.commit()
+    print("driver_id column added to Bookings_Display table.")
+except sqlite3.Error as e:
+    print(f"Error adding driver_id column: {e}")
 
 
                    
