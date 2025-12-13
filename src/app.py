@@ -354,7 +354,7 @@ class Driver(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         ttk.Label(self, text="Driver's Page", font=("Helvetica", 18)).pack(pady=20)
-        ttk.Button(self, text="View Bookings", command=lambda: (controller.frames['Booking_Display'].user_view('driver'), controller.frames['Booking_Display'].load_bookings(), controller.show_frame('Booking_Display'))).pack(pady=10)
+        ttk.Button(self, text="View Assigned Bookings", command=lambda: (controller.frames['Booking_Display'].user_view('driver'), controller.frames['Booking_Display'].load_bookings(), controller.show_frame('Booking_Display'))).pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
 #The Admin Frame <-------------------------------------------------
@@ -362,7 +362,7 @@ class Admin(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         ttk.Label(self, text="Welcome Home, Admin", font=("Helvetica", 18)).pack(pady=20)
-        ttk.Button(self, text="Assign Driver to Bookings").pack(pady=10)
+        ttk.Button(self, text="Assign Driver to Bookings", command=lambda: (controller.frames["AdminAssign"].load_bookings(), controller.frames["AdminAssign"].load_drivers(), controller.show_frame("AdminAssign"))).pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
         
 #The Bookings Frame <-------------------------------------------------
@@ -494,6 +494,9 @@ class Booking_Display(tk.Frame):
             cursor.execute("SELECT bookings_display_id, date, time, pickup_location, dropoff_location FROM Bookings_Display")
         else:
             cursor.execute("SELECT bookings_display_id, date, time, pickup_location, dropoff_location FROM Bookings_Display WHERE user_id=?", (self.controller.current_user_id,))
+            
+        if self.view_mode == "driver":
+            cursor.execute("SELECT bookings_display_id, date, time, pickup_location, dropoff_location FROM Bookings_Display WHERE driver_id=?", (self.controller.current_driver_id,))
         
         rows = cursor.fetchall()
         conn.close()
@@ -570,8 +573,65 @@ class AdminAssign(tk.Frame):
         self.driver_combo.pack(pady=5)
         
         ttk.Button(self, text="Assign Driver", command=self.assign_driver).pack(pady=10)
-        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
+        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Admin")).pack(pady=10)
+        
+    #Load Bookings First <------------------------------------------------------------------------------------
+    def load_bookings(self):
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        
+        cursor.execute("SELECT b.bookings_display_id, b.date, b.time, b.pickup_location, b.dropoff_location FROM Bookings_Display b LEFT JOIN Drivers d ON b.driver_id = d.driver_id WHERE b.driver_id IS NULL")
+        rows = cursor.fetchall()
+        conn.close()
+        
+        for row in rows:
+            self.table.insert("", "end", values=row)
+            
+        conn.close()
     
+    #Load the Drivers next <------------------------------------------------------------------------------------
+    def load_drivers(self):
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        
+        cursor.execute("SELECT driver_id, name FROM Drivers")
+        drivers = cursor.fetchall()
+        conn.close()
+        
+        self.driver_map = {f"{name} (ID: {driver_id})": driver_id for driver_id, name in drivers}
+        self.driver_combo['values'] = list(self.driver_map.keys())
+        
+        if not drivers:
+            messagebox.showwarning("System Error", "No drivers found")
+        
+    #Driver Assignment Logic <------------------------------------------------------------------------------------
+    def assign_driver(self):
+        selected_item = self.table.focus()
+        if not selected_item:
+            messagebox.showerror("Error", "Please select a booking to assign a driver.")
+            return
+        
+        booking = self.table.item(selected_item, "values")
+        booking_id = booking[0]
+        
+        selected_driver = self.driver_combo.get()
+        if not selected_driver:
+            messagebox.showerror("Error", "Please select a driver to assign.")
+            return
+        
+        driver_id = self.driver_map[selected_driver]
+        
+        try:
+            conn = sqlite3.connect('database.db')
+            cursor = conn.cursor()
+            cursor.execute("UPDATE Bookings_Display SET driver_id=? WHERE bookings_display_id=?", (driver_id, booking_id))
+            conn.commit()
+            conn.close()
+            
+            messagebox.showinfo("Success", "Driver assigned successfully!")
+            self.table.delete(selected_item)
+        except sqlite3.Error as e:
+            messagebox.showerror("Database Error", f"Failed to assign driver: {e}")
         
 if __name__ == "__main__":
     app = TaxiBookings()
