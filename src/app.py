@@ -197,11 +197,11 @@ class AdminLoginPage(tk.Frame):
         self.controller = controller
         ttk.Label(self, text="Admin Login", font=("Helvetica", 18)).pack(pady=20)
 
-        tk.Label(self, text="Admin Username").pack()
+        tk.Label(self, text="Admin Username").pack(pady=10)
         self.username_entry = ttk.Entry(self)
         self.username_entry.pack()
         
-        ttk.Label(self, text="Admin Email").pack()
+        ttk.Label(self, text="Admin Email").pack(pady=10)
         self.email_entry = ttk.Entry(self)
         self.email_entry.pack()
 
