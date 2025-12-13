@@ -622,23 +622,12 @@ class AdminAssign(tk.Frame):
         
         driver_id = self.driver_map[selected_driver]
         
-        #Check for overlapping bookings <------------------------------------------------------------------------------------
-        try:
-            conn = sqlite3.connect('database.db')
-            cursor = conn.cursor()
-            cursor.execute("UPDATE Bookings_Display SET driver_id=? WHERE bookings_display_id=?", (driver_id, booking_id))
-            conn.commit()
-            conn.close()
-            
-            messagebox.showinfo("Success", "Driver assigned successfully!")
-            self.table.delete(selected_item)
-        except sqlite3.Error as e:
-            messagebox.showerror("Database Error", f"Failed to assign driver: {e}")
-            
+        #Check for overlapping bookings FIRST<------------------------------------------------------------------------------------
         if self.overlap(driver_id, booking[1], booking[2]):
-            messagebox.showwarning("Scheduling Conflict", "Warning: The assigned driver has overlapping bookings!")
+            messagebox.showerror("Scheduling Conflict", "The selected driver has an appointment at this time.")
             return
         
+        #NOW assign the driver to the booking <------------------------------------------------------------------------------------
         try:
             conn = sqlite3.connect('database.db')
             cursor = conn.cursor()
@@ -648,9 +637,8 @@ class AdminAssign(tk.Frame):
             
             messagebox.showinfo("Success", "Driver assigned successfully!")
             self.table.delete(selected_item)
-            
         except sqlite3.Error as e:
-            messagebox.showerror("System Error", f"Failed to assign driver: {e}")
+            messagebox.showerror("Database Error", f"Failed to assign driver: {e}") #<----------------- It basically checks if a driver has overlapping bookings first THEN allows the admin to assign the driver to the booking.
     
     #Driver Overlap Check <------------------------------------------------------------------------------------
     def overlap(self, driver_id, date, newtime):
