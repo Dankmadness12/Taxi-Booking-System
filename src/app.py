@@ -1,4 +1,3 @@
-from cmath import e
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
@@ -100,7 +99,7 @@ class LoginPage(tk.Frame):
                 self.controller.current_username = {"id": user_id, "username": username, "email": email}
 
                 # Load passenger data if the frame has that method
-                passengers_frame = self.controller.frames.get("Passenger")
+                passengers_frame = self.controller.frames.get("passenger")
                 if passengers_frame and hasattr(passengers_frame, "load_passenger"):
                     passengers_frame.load_passenger(user_id)
 
@@ -246,7 +245,7 @@ class AdminLoginPage(tk.Frame):
                 # Load passenger data if the frame has that method
                 admin_frame = self.controller.frames.get("Admin")
                 if admin_frame and hasattr(admin_frame, "load_admin"):
-                    admin_frame.load_passenger(admin_id)
+                    admin_frame.load_admin(admin_id)
 
                 messagebox.showinfo("Login Success", f"Welcome home {username}!")
                 self.controller.show_frame("Admin")
@@ -346,7 +345,8 @@ class Passenger(tk.Frame):
         super().__init__(parent)
         ttk.Label(self, text="Your Page", font=("Helvetica", 18)).pack(pady=20)
         ttk.Button(self, text="Book a Taxi", command=lambda: controller.show_frame("Bookings")).pack(pady=10)
-        ttk.Button(self, text="View Your Bookings", command=lambda: controller.show_frame("Booking_Display")).pack(pady=10)
+        #View Bookings Button to see their, well, bookings <-------------------------------------------------
+        ttk.Button(self, text="View Your Bookings", command=lambda: (controller.frames["Booking_Display"].user_view("Passenger"), controller.frames["Booking_Display"].load_bookings(), controller.show_frame("Booking_Display"))).pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
 #The Driver Frame <-------------------------------------------------
@@ -354,7 +354,7 @@ class Driver(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         ttk.Label(self, text="Driver's Page", font=("Helvetica", 18)).pack(pady=20)
-        ttk.Button(self, text="View Bookings", command=lambda: controller.show_frame("Booking_Display")).pack(pady=10)
+        ttk.Button(self, text="View Bookings", command=lambda: (controller.frames['Booking_Display'].user_view('driver'), controller.frames['Booking_Display'].load_bookings(), controller.show_frame('Booking_Display'))).pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
 #The Admin Frame <-------------------------------------------------
@@ -447,6 +447,7 @@ class Booking_Display(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
+        self.view_mode = "passenger" # Default view mode
         ttk.Label(self, text="Created Bookings", font=("Helvetica", 18)).pack(pady=20)
         
         #The Table to Display the Bookings made <---------------------------------------------------------
@@ -472,21 +473,35 @@ class Booking_Display(tk.Frame):
         self.table.heading('Dropoff Location', text='Dropoff Location', anchor=tk.W)
         
         self.table.pack(expand=True, fill=tk.BOTH)
-        ttk.Button(self, text="Back", command=lambda: controller.show_frame("Passenger")).pack(pady=10)
-        ttk.Button(self, text="Cancel a Booking", command=self.booking_cancel).pack(pady=10)
+        
+        # Buttons to go back or cancel a booking <-------------------------------------------------
+        # ttk.Button(self, text="Back", command=lambda: controller.show_frame("Passenger")).pack(pady=10)
+        # ttk.Button(self, text="Cancel a Booking", command=self.booking_cancel).pack(pady=10)
+        
+        self.butt_back = ttk.Button(self, text="Back", command=self.back_to)
+        self.butt_back.pack(pady=10)
+        
+        self.cancel_butt = ttk.Button(self, text="Cancel Booking", command=self.booking_cancel)
+        self.cancel_butt.pack(pady=10)
         
     #Booking Display Logicccccc <------------------------------------------------------------------------
     def load_bookings(self):
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
-        cursor.execute("SELECT bookings_display_id, date, time, pickup_location, dropoff_location FROM Bookings_Display WHERE user_id=?", 
-                       (self.controller.current_user_id,)
-                    )
+        
+        #Load bookings based on view mode <-------------------------------------------------
+        if self.view_mode == "driver":
+            cursor.execute("SELECT bookings_display_id, date, time, pickup_location, dropoff_location FROM Bookings_Display")
+        else:
+            cursor.execute("SELECT bookings_display_id, date, time, pickup_location, dropoff_location FROM Bookings_Display WHERE user_id=?", (self.controller.current_user_id,))
         
         rows = cursor.fetchall()
         conn.close()
         
-        #To add a new row <-----------------------------------------------------------------------------
+        #To  delete and add a new row <-----------------------------------------------------------------------------
+        for item in self.table.get_children():
+            self.table.delete(item)
+            
         for row in rows:
             self.table.insert("", "end", values=row)
             
@@ -513,6 +528,21 @@ class Booking_Display(tk.Frame):
         
         self.table.delete(chosen)
         messagebox.showinfo("Successfully Cancelled!", "You've successfully cancelled your booking! Yay?")
+        
+    def user_view(self, mode):
+        self.view_mode = mode
+        
+        if mode == "driver":
+            self.cancel_butt.pack_forget()
+        else:
+            if not self.cancel_butt.winfo_ismapped():  
+               self.cancel_butt.pack(pady=10)
+            
+    def back_to(self):
+        if self.view_mode == "driver":
+            self.controller.show_frame("Driver")
+        else:
+            self.controller.show_frame("Passenger")
         
 if __name__ == "__main__":
     app = TaxiBookings()
