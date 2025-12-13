@@ -354,7 +354,7 @@ class Driver(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         ttk.Label(self, text="Driver's Page", font=("Helvetica", 18)).pack(pady=20)
-        ttk.Button(self, text="Assigned Trips", command=lambda: controller.show_frame("Booking_Display")).pack(pady=10)
+        ttk.Button(self, text="View Bookings", command=lambda: controller.show_frame("Booking_Display")).pack(pady=10)
         ttk.Button(self, text="Logout", command=lambda: controller.show_frame("Homepage")).pack(pady=10)
 
 #The Admin Frame <-------------------------------------------------
