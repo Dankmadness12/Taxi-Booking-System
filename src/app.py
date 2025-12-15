@@ -6,9 +6,6 @@ from datetime import datetime, timedelta
 import sqlite3
 import hashlib
 
-
-#Order of Business: Edit this file to add more details to the Login and Register pages. <-------------------------------------------------
-
 #Creating the main application <-------------------------------------------------
 class TaxiBookings(tk.Tk):
     def __init__(self):
