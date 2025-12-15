@@ -4,8 +4,6 @@ from tkinter import messagebox
 from tkcalendar import DateEntry
 from datetime import datetime, timedelta
 import sqlite3
-import hashlib
-
 
 #Order of Business: Edit this file to add more details to the Login and Register pages. <-------------------------------------------------
 
