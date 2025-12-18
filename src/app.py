@@ -43,7 +43,7 @@ class Homepage(tk.Frame):
         ttk.Button(self, text="Register", command=lambda: controller.show_frame("RegisterPage")).pack(pady=20)
         ttk.Button(self, text="Exit", command=controller.destroy).pack(pady=20)
 
-#The Login Page <-------------------------------------------------
+#The Passenger Login Page <-------------------------------------------------
 class LoginPage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
